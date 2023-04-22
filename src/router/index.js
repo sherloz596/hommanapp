@@ -1,12 +1,52 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import LoginPage from '../views/LoginPage.vue'
+import RegistroPage from '../views/RegistroPage.vue'
+import DespensasPage from '../views/DespensasPage.vue'
+import Dashboard from '../views/Dashboard.vue'
+import FavoritosPage from '../views/FavoritosPage.vue'
+import CompraPage from '../views/CompraPage.vue'
+import PreferenciasPage from '../views/PreferenciasPage.vue'
+
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: LoginPage
   },
+  {
+    path: '/registro',
+    name: 'registro',
+    component: RegistroPage
+  },
+  {
+    path: '/Dashboard',
+    name: 'dashboard',
+    component: Dashboard,
+    children:[
+      {
+        path: 'despensas',
+        name: 'despensas',
+        component: DespensasPage
+      },
+      {
+        path: 'favoritos',
+        name: 'favoritos',
+        component: FavoritosPage
+      },
+      {
+        path: 'compra',
+        name: 'compra',
+        component: CompraPage
+      },
+      {
+        path: 'preferencias',
+        name: 'preferencias',
+        component: PreferenciasPage
+      }
+    ]
+  },
+  
   {
     path: '/about',
     name: 'about',
