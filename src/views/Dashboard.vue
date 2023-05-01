@@ -30,7 +30,7 @@ import FootBar from '../components/FootBar.vue';
         //  &__cabecera{
         //  }
          &__contenido{
-             height: 100vh;
+             height: 50vh;
              background-color: #EEEEEE;
          }
         //  &__pie{

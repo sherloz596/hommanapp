@@ -57,7 +57,6 @@ import axios from 'axios'
                 await axios.post('login',data_login)
                 .then (respuesta =>{
                     if (respuesta.data.accessToken != null){
-                        console.log(respuesta.data.accessToken)
                         localStorage.setItem('token', respuesta.data.accessToken)
                         //this.axios.defaults.headers.common['Authorization'] = 'Bearer '+ respuesta.data.accessToken
                         this.$router.push('dashboard/despensas')

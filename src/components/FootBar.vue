@@ -74,28 +74,45 @@
     export default {
         data: function() {
             return{
-                seleccionado: ''
+                 seleccionado: ''
                 //value: 1 
             }
         },
         methods:{
             despensas(){
-                this.seleccionado = 'despensas'
+                //this.seleccionado = 'despensas'
                 this.$router.push('despensas')
             },
             compra(){
-                this.seleccionado = 'compra'
+                //this.seleccionado = 'compra'
                 this.$router.push('compra')
             },
             favoritos(){
-                this.seleccionado = 'favoritos'
+                //this.seleccionado = 'favoritos'
                 this.$router.push('favoritos')
             },
             preferencias(){
-                this.seleccionado = 'preferencias'
+                //this.seleccionado = 'preferencias'
                 this.$router.push('preferencias')
             }
-        }
+        },
+        // mounted() {
+        //     console.log(this.$route.path)
+        //     switch(this.$route.path){
+        //         case "/dashboard/despensas":
+        //             this.seleccionado = this.despensas
+        //             break
+        //         case "/dashboard/compra":
+        //             this.seleccionado = this.compra
+        //             break
+        //         case "/dashboard/favoritos":
+        //             this.seleccionado = this.favoritos
+        //             break
+        //         case "/dashboard/preferencias":
+        //             this.seleccionado = this.preferencias
+        //             break
+        //     }
+        // },
        // data: () => ({ value: 1 }),
        /* computed: {
     bgcolor () {

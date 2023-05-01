@@ -19,7 +19,7 @@ export default {
 
 <style lang="scss" scoped>
   .app{
-    background-color: purple;
+    background-color: #810281;
     //padding: 30px;
   }
 </style>

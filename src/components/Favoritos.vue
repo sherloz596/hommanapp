@@ -1,12 +1,16 @@
 <template>
     <div>
-        <h1>Favoritos</h1>
+        <productos
+        :tipo=3></productos>
     </div>
 </template>
 
 <script>
+import Productos from '../components/Productos.vue';
     export default {
-        
+        components:{
+            Productos
+        }
     }
 </script>
 
