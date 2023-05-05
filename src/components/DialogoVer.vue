@@ -17,6 +17,7 @@
           v-if="data_dialog==='productos'"
           :tipo=4></productos>
           <unidades v-if="data_dialog==='unidades'"></unidades>
+          <anteriores v-if="data_dialog==='compras_anteriores'"></anteriores>
           <div class="pa-4 text-end">
             <v-btn
               class="text-none"
@@ -37,6 +38,7 @@
 <script>
 import Productos from '../components/Productos.vue';
 import Unidades from '../components/Unidades.vue';
+import Anteriores from '../components/Anteriores.vue';
     export default {
         props:{
             data_dialog: "",
@@ -49,7 +51,8 @@ import Unidades from '../components/Unidades.vue';
         },
         components:{
             Productos,
-            Unidades
+            Unidades,
+            Anteriores
         }
     }
 </script>

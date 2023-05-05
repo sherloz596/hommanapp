@@ -7,7 +7,14 @@
                 closable
                 :text="error_prod_text"
                 ></v-alert>
-        <v-table density="compact">
+                <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+        <v-table density="compact" :search="search" :items="productos">
             <h2>{{ despensa }}</h2>
       <thead>
         <tr>
@@ -63,6 +70,7 @@ import axios from 'axios'
                 error_prod: false,
                 error_prod_text: "",
                 cod_lista_curso: 0,
+                search: '',
                 productos:[{
                 }],
                 compra:[{

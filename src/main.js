@@ -14,12 +14,12 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* import specific icons */
 import { faDoorClosed, faGear, faBasketShopping,faStar,faCirclePlus,faPen,faTrashCan,
-  faSquareCheck,faRotateLeft} 
+  faSquareCheck,faRotateLeft,faRightToBracket,faCheck} 
 from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
 library.add(faGear,faBasketShopping,faDoorClosed,faStar,faCirclePlus,faPen,faTrashCan,
-  faSquareCheck,faRotateLeft)
+  faSquareCheck,faRotateLeft,faRightToBracket,faCheck)
 
 loadFonts()
 

@@ -6,13 +6,39 @@ import Dashboard from '../views/Dashboard.vue'
 import FavoritosPage from '../views/FavoritosPage.vue'
 import CompraPage from '../views/CompraPage.vue'
 import PreferenciasPage from '../views/PreferenciasPage.vue'
+import ComprasAnterioresPage from '../views/ComprasAnterioresPage.vue'
 
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: LoginPage
+    component: LoginPage,
+    beforeEnter: (to, from, next) => {
+      let token = localStorage.getItem('token')
+      if(token === '' | token === null){
+        return next({
+          name: 'login'
+        })
+      }else{
+        return next({
+          name: 'despensas'
+        })
+      }
+    }
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginPage,
+    beforeEnter: (to, from, next) => {
+      let token = localStorage.getItem('token')
+      if(token != '' | token != null){
+        return next({
+          name: 'despensas'
+        })
+      }
+    }
   },
   {
     path: '/registro',
@@ -37,12 +63,17 @@ const routes = [
       {
         path: 'compra',
         name: 'compra',
-        component: CompraPage
+        component: CompraPage,
       },
       {
         path: 'preferencias',
         name: 'preferencias',
         component: PreferenciasPage
+      },
+      {
+        path: 'anteriores',
+        name: 'anteriores',
+        component: ComprasAnterioresPage
       }
     ]
   },
