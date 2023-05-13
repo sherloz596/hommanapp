@@ -5,8 +5,11 @@ import DespensasPage from '../views/DespensasPage.vue'
 import Dashboard from '../views/Dashboard.vue'
 import FavoritosPage from '../views/FavoritosPage.vue'
 import CompraPage from '../views/CompraPage.vue'
-import PreferenciasPage from '../views/PreferenciasPage.vue'
+import ProductosPage from '../views/ProductosPage.vue'
 import ComprasAnterioresPage from '../views/ComprasAnterioresPage.vue'
+import UnidadesPage from '../views/UnidadesPage.vue'
+import RecoveryPage from '../views/RecoveryPage.vue'
+import ResetPassPage from '../views/ResetPassPage.vue'
 
 
 const routes = [
@@ -14,36 +17,46 @@ const routes = [
     path: '/',
     name: 'home',
     component: LoginPage,
-    beforeEnter: (to, from, next) => {
-      let token = localStorage.getItem('token')
-      if(token === '' | token === null){
-        return next({
-          name: 'login'
-        })
-      }else{
-        return next({
-          name: 'despensas'
-        })
-      }
-    }
+    // beforeEnter: (to, from, next) => {
+    //   let token = localStorage.getItem('token')
+    //   if(token === '' | token === null){
+    //     return next({
+    //       name: 'login'
+    //     })
+    //   }else{
+    //     return next({
+    //       name: 'despensas'
+    //     })
+    //   }
+    // }
   },
   {
     path: '/login',
     name: 'login',
     component: LoginPage,
-    beforeEnter: (to, from, next) => {
-      let token = localStorage.getItem('token')
-      if(token != '' | token != null){
-        return next({
-          name: 'despensas'
-        })
-      }
-    }
+    // beforeEnter: (to, from, next) => {
+    //   let token = localStorage.getItem('token')
+    //   if(token != '' | token != null){
+    //     return next({
+    //       name: 'despensas'
+    //     })
+    //   }
+    // }
   },
   {
     path: '/registro',
     name: 'registro',
     component: RegistroPage
+  },
+  {
+    path: '/reset/:id/:token',
+    name: 'reset',
+    component: ResetPassPage
+  },
+  {
+    path: '/recovery',
+    name: 'recovery',
+    component: RecoveryPage
   },
   {
     path: '/Dashboard',
@@ -66,14 +79,19 @@ const routes = [
         component: CompraPage,
       },
       {
-        path: 'preferencias',
-        name: 'preferencias',
-        component: PreferenciasPage
+        path: 'productos',
+        name: 'productos',
+        component: ProductosPage
       },
       {
         path: 'anteriores',
         name: 'anteriores',
         component: ComprasAnterioresPage
+      },
+      {
+        path: 'unidades',
+        name: 'unidades',
+        component: UnidadesPage
       }
     ]
   },

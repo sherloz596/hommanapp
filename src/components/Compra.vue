@@ -23,7 +23,7 @@
         </div> 
 
         <div v-if="lista_vacia === false">
-            <v-table density="compact">
+            <v-table class="tabla" density="compact">
                 <thead>
                     <h3>Lista de la compra
                         <v-btn @click="editLista()">Editar</v-btn> 
@@ -143,11 +143,12 @@ import DialogoVer from '../components/DialogoVer.vue';
                 })
             },
             async cargarCompras(){
-                await axios.get('compra')
+                await axios.get('compra_curso')
                 .then ((respuesta) =>{
                     if(respuesta.status === 200){
                         this.productos = respuesta.data
                     }
+                    console.log(this.productos[0])
                     if(this.productos[0]===undefined){
                         this.lista_vacia = true
                     }else{
@@ -330,5 +331,8 @@ import DialogoVer from '../components/DialogoVer.vue';
     .almac_text{
         color: #FFAFAF;
         font-size: small;
+    }
+    .tabla{
+        background-color: #EEEEEE;
     }
 </style>

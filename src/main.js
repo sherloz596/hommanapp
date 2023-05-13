@@ -14,18 +14,18 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* import specific icons */
 import { faDoorClosed, faGear, faBasketShopping,faStar,faCirclePlus,faPen,faTrashCan,
-  faSquareCheck,faRotateLeft,faRightToBracket,faCheck} 
+  faSquareCheck,faRotateLeft,faRightToBracket,faCheck,faRightFromBracket,faAnglesRight,faJar} 
 from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
 library.add(faGear,faBasketShopping,faDoorClosed,faStar,faCirclePlus,faPen,faTrashCan,
-  faSquareCheck,faRotateLeft,faRightToBracket,faCheck)
+  faSquareCheck,faRotateLeft,faRightToBracket,faCheck,faRightFromBracket,faAnglesRight,faJar)
 
 loadFonts()
 
 //axios.defaults.baseURL = 'http://hommanapi.test/api/'
-axios.defaults.baseURL = 'http://192.168.1.207:8000/api/'
-//axios.defaults.baseURL = 'http://192.168.1.46:8000/api/'
+// axios.defaults.baseURL = 'http://192.168.1.207:8000/api/'
+axios.defaults.baseURL = 'http://192.168.1.45:8000/api/'
 
 var token = localStorage.getItem('token')
 

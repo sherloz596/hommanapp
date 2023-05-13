@@ -13,8 +13,7 @@
               counter
               @click:append="show1 = !show1"
             ></v-text-field>
-                <a href="#" class="text-body-2 font-weight-regular">¿Olvidaste tu contraseña?</a>
-
+                <p class="text-body-2"><router-link to="recovery">¿Olvidaste tu contraseña?</router-link></p>
                 <v-btn type="submit" color="primary" block class="mt-2"
                 v-if="loading === false">Iniciar sesión</v-btn>
                 <v-progress-linear color="primary" indeterminate

@@ -117,6 +117,7 @@ import axios from 'axios'
                 await axios.get('ver_anteriores/'+this.cod_lista)
                 .then ((respuesta) =>{
                     this.productos = respuesta.data
+                    this.comprobarCompleta()
                 })
                 .catch(error => {
                     if (error.response.status != 0){
@@ -162,8 +163,6 @@ import axios from 'axios'
                     .then ((respuesta) =>{
                         if (respuesta.data!= undefined){
                             this.marcarAlmacenado(producto)
-                            this.cargaCompra()
-                            
                         }
                     })
                     .catch(error => {
@@ -174,17 +173,20 @@ import axios from 'axios'
                             }
                         }
                     })
-                    this.comprobarCompleta()
                 }
             },
-            marcarAlmacenado:function(producto){
+            async marcarAlmacenado(producto){
                 let payload = {
                     cod_lista: producto.cod_lista,
                     cod_producto: producto.cod_producto,
                     estado_producto: "Almacenado"
                 }
 
-                axios.put('lista_compra_lin/'+producto.cod_linea,payload)
+                await axios.put('lista_compra_lin/'+producto.cod_linea,payload)
+                .then ((respuesta) =>{
+                    this.cargaCompra()
+                    // this.comprobarCompleta()
+                    })
                 .catch(error => {
                     if (error.response.status != 0){
                         this.error_carga_text = "Se ha producido un error"
@@ -192,7 +194,7 @@ import axios from 'axios'
                     }
                 })
             },
-            async comprobarCompleta(){
+            comprobarCompleta(){
                 let completa = true
                 for (let i = 0; i < this.productos.length; i++){
                     console.log(i+": "+this.productos[i].estado_producto)

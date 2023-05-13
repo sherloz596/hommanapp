@@ -14,17 +14,10 @@
           single-line
           hide-details
         ></v-text-field>
-        <v-table density="compact" :search="search" :items="productos">
+        <v-table class="tabla" density="compact" :search="search" :items="productos">
             <h2>{{ despensa }}</h2>
       <thead>
-        <tr>
-          <th class="text-left">
-            Name
-          </th>
-          <th class="text-left">
-            Calories
-          </th>
-        </tr>
+
       </thead>
       <tbody>
         <tr
@@ -54,6 +47,16 @@
         </td>
           <!-- <td>{{ producto.cantidad }}</td> -->
         </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+
       </tbody>
     </v-table>
     </div>
@@ -240,5 +243,8 @@ import axios from 'axios'
     }
     .icon_btn{
         cursor: pointer;
+    }
+    .tabla{
+        background-color: #EEEEEE;
     }
 </style>

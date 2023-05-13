@@ -40,15 +40,14 @@
             <font-awesome-icon icon="fa-solid fa-star" size="xl" />
           </v-btn>
   
-        <v-btn class="seleccionado" v-if="seleccionado === 'preferencias'"
-        @click="preferencias">
-            <font-awesome-icon  icon="fa-solid fa-gear" size = "xl" />
+        <v-btn class="seleccionado" v-if="seleccionado === 'productos'"
+        @click="productos">
+            <font-awesome-icon  icon="fa-solid fa-jar" size = "xl" />
   
-          <span>Preferencias</span>
+          <span>Productos</span>
         </v-btn>
-  
-        <v-btn v-else  @click="preferencias">
-            <font-awesome-icon  icon="fa-solid fa-gear" size = "xl"/>
+        <v-btn v-else  @click="productos">
+            <font-awesome-icon  icon="fa-solid fa-jar" size = "xl"/>
           </v-btn>
       </v-bottom-navigation>
         <!-- <footer class="pie">
@@ -74,9 +73,12 @@
     export default {
         data: function() {
             return{
-                 seleccionado: ''
+                 
                 //value: 1 
             }
+        },
+        props:{
+            seleccionado: ''
         },
         methods:{
             despensas(){
@@ -91,9 +93,9 @@
                 //this.seleccionado = 'favoritos'
                 this.$router.push('favoritos')
             },
-            preferencias(){
+            productos(){
                 //this.seleccionado = 'preferencias'
-                this.$router.push('preferencias')
+                this.$router.push('productos')
             }
         },
         // mounted() {

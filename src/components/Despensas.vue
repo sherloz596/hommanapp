@@ -26,8 +26,7 @@
           <template v-slot:append>
             <v-btn icon="$close" variant="text" @click="dialog = false"></v-btn>
           </template>
-          <productos
-          :despensa="ver_despensa"></productos>
+          <despensas-tabla :cod_despensa="ver_despensa"></despensas-tabla>
           <div class="pa-4 text-end">
             <v-btn
               class="text-none"
@@ -35,7 +34,7 @@
               min-width="92"
               rounded
               variant="outlined"
-              @click="close_add"
+              @click="dialog = false"
             >
               Close
             </v-btn>
@@ -90,7 +89,7 @@
 
 <script>
 import axios from 'axios'
-import Productos from '../components/Productos.vue';
+import DespensasTabla from '../components/DespensasTabla.vue';
     export default {
         name: 'despensas',
         data(){
@@ -115,7 +114,7 @@ import Productos from '../components/Productos.vue';
             }
         },
         components:{
-            Productos
+            DespensasTabla
         },
         methods:{
             cargarDespensas:function(){
@@ -165,6 +164,7 @@ import Productos from '../components/Productos.vue';
                 & coincide === false){
                     var data = {
                     despensa: this.nom_despensa,
+                    idioma: ""
                     }
                     await axios.post('despensas',data)
                     .then (respuesta =>{
@@ -174,6 +174,7 @@ import Productos from '../components/Productos.vue';
                     }
                 })
                 .catch(error => {
+                    console.log(error)
                      console.log(error.response.status);
                      if (error.response.status === 401){
                         this.err_nom_text = "Se ha producido un error"

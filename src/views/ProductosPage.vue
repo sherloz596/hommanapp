@@ -1,14 +1,14 @@
 <template>
     <div>
-        <preferencias></preferencias>
+        <productos :tipo=4></productos>
     </div>
 </template>
 
 <script>
-import Preferencias from '../components/Preferencias.vue';
+import Productos from '../components/Productos.vue';
     export default {
         components:{
-            Preferencias
+            Productos
         }
     }
 </script>
