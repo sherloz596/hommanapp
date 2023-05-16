@@ -24,8 +24,8 @@ library.add(faGear,faBasketShopping,faDoorClosed,faStar,faCirclePlus,faPen,faTra
 loadFonts()
 
 //axios.defaults.baseURL = 'http://hommanapi.test/api/'
-// axios.defaults.baseURL = 'http://192.168.1.207:8000/api/'
-axios.defaults.baseURL = 'http://192.168.1.45:8000/api/'
+axios.defaults.baseURL = 'http://192.168.1.207:8000/api/'
+// axios.defaults.baseURL = 'http://192.168.1.45:8000/api/'
 
 var token = localStorage.getItem('token')
 

@@ -28,6 +28,9 @@
             <v-list-item prepend-icon="mdi-weight-gram" title="Unidades" value="unit"
             @click="$router.push('unidades')">
             </v-list-item>
+            <v-list-item prepend-icon="mdi-account-multiple-plus" title="Invitar usuarios" value="invitar"
+            @click="$router.push('invitar')">
+            </v-list-item>
             <v-list-item prepend-icon="mdi mdi-logout" title="Cerrar sesión" value="logout"
             @click="logout">
             </v-list-item>

@@ -111,7 +111,6 @@
             }
         },
         mounted(){
-            console.log(this.$route.params.id + " - " + this.$route.params.token)
         }
         }
     </script>

@@ -117,8 +117,8 @@ import DespensasTabla from '../components/DespensasTabla.vue';
             DespensasTabla
         },
         methods:{
-            cargarDespensas:function(){
-                axios.get('despensas')
+            async cargarDespensas(){
+                await axios.get('despensas')
                 .then ((respuesta) =>{
                     if(respuesta.status === 200){
                         this.despensas = respuesta.data

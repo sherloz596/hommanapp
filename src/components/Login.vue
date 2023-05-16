@@ -1,7 +1,7 @@
 <template>
       <div class="d-flex align-center justify-center" style="height: 100vh">
         <v-sheet width="400" class="mx-auto">
-            <v-form fast-fail @submit.prevent="login">
+            <v-form class="form_login" fast-fail @submit.prevent="login">
                 <v-text-field v-model="email" label="Email"></v-text-field>
 
                 <v-text-field
@@ -18,10 +18,11 @@
                 v-if="loading === false">Iniciar sesión</v-btn>
                 <v-progress-linear color="primary" indeterminate
                 v-if="loading === true"></v-progress-linear>
+                <div class="mt-2">
+                    <p class="text-body-2">¿No tienes cuenta? <router-link to="registro">Regístrate</router-link></p>
+                </div>
             </v-form>
-            <div class="mt-2">
-                <p class="text-body-2">¿No tienes cuenta? <router-link to="registro">Regístrate</router-link></p>
-            </div>
+            
             <v-alert v-if = "error_login"
             density="compact"
             type="error"
@@ -58,7 +59,7 @@ import axios from 'axios'
                     if (respuesta.data.accessToken != null){
                         localStorage.setItem('token', respuesta.data.accessToken)
                         //this.axios.defaults.headers.common['Authorization'] = 'Bearer '+ respuesta.data.accessToken
-                        this.$router.push('dashboard/despensas')
+                        //  this.$router.push('dashboard/despensas')
                     }
                 })
                 .catch(error => {
@@ -67,12 +68,18 @@ import axios from 'axios'
                         this.error_login = true
                      }
                 })
+                while(localStorage.getItem('token')===null){
+                    
+                }
                 this.loading = false
+                this.$router.push('dashboard/despensas')
             }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-
+    .form_login{
+        padding: 20px;
+    }
 </style>

@@ -48,6 +48,10 @@ import FootBar from '../components/FootBar.vue';
                     this.seleccionado = ""
                     this.titulo = 'Lista de unidades'
                 }
+                if(this.$route.path === "/dashboard/invitar"){
+                    this.seleccionado = ""
+                    this.titulo = 'Invitar usuarios'
+                }
             }
         },
         mounted(){

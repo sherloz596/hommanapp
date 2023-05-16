@@ -10,6 +10,8 @@ import ComprasAnterioresPage from '../views/ComprasAnterioresPage.vue'
 import UnidadesPage from '../views/UnidadesPage.vue'
 import RecoveryPage from '../views/RecoveryPage.vue'
 import ResetPassPage from '../views/ResetPassPage.vue'
+import RegistroGuestPage from '../views/RegistroGuestPage.vue'
+import InvitarPage from '../views/InvitarPage.vue'
 
 
 const routes = [
@@ -54,6 +56,11 @@ const routes = [
     component: ResetPassPage
   },
   {
+    path: '/registro-guest/:id/:email',
+    name: 'registro-guest',
+    component: RegistroGuestPage
+  },
+  {
     path: '/recovery',
     name: 'recovery',
     component: RecoveryPage
@@ -92,6 +99,11 @@ const routes = [
         path: 'unidades',
         name: 'unidades',
         component: UnidadesPage
+      },
+      {
+        path: 'invitar',
+        name: 'invitar',
+        component: InvitarPage
       }
     ]
   },
