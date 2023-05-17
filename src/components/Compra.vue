@@ -14,8 +14,8 @@
         <div class="padd">
         <div class="anteriores" @click="$router.push('anteriores')">
             <!-- <v-btn class="btn_old" block > -->
-                <span>Compras anteriores</span>
-                
+                <span v-if="idioma==='SPA'">Compras anteriores</span>
+                <span v-else>Previous purchase</span>
             <v-badge v-if="hay_pendientes" inline color="red" :content="num_pendientes"></v-badge>
             <!-- </v-btn> -->
             <span class="almac_text" v-if="hay_pendientes">Por almacenar</span>
@@ -71,15 +71,19 @@
                 </tbody>
             </v-table>
             <div class="val_compra" v-if="ver_validar">
-                <v-btn color="success" @click="validarCompra()">
+                <v-btn v-if="idioma==='SPA'" color="success" @click="validarCompra()">
                     Validar compra
+                </v-btn>
+                <v-btn v-else color="success" @click="validarCompra()">
+                    Confirm purchase
                 </v-btn>
             </div>
         </div>
         <div v-else>
-            <h3>
+            <h3 v-if="idioma==='SPA'">
                 La lista de la compra está vacía
             </h3>
+            <h3 v-else>The shopping list is empty</h3>
         </div>
     </div>
     <dialogo-ver 
@@ -110,7 +114,8 @@ import DialogoVer from '../components/DialogoVer.vue';
                 listas_pendientes:[{}],
                 data_dialog_tit: "Compras anteriores",
                 dialog: false,
-                data_dialog: "compras_anteriores"
+                data_dialog: "compras_anteriores",
+                idioma: ""
             }
         },
         components:{
@@ -281,6 +286,7 @@ import DialogoVer from '../components/DialogoVer.vue';
             }
         },
         mounted(){
+            this.idioma = localStorage.getItem('idioma')
             this.cargarListas()
             this.cargarCompras()
         } 

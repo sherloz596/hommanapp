@@ -28,7 +28,8 @@
             <font-awesome-icon class="edit_icon"  icon="fa-solid fa-pen" size = "xs"/>
             <font-awesome-icon class="del_icon" icon="fa-solid fa-trash-can" size = "xs"/></td>
         <!-- <td v-if="tipo === 4"><font-awesome-icon  icon="fa-solid fa-trash-can" size = "xs"/></td> -->
-        <td>{{ producto.producto }}</td>
+        <td v-if="idioma==='SPA'">{{ producto.producto }}</td>
+        <td v-else>{{ producto.idioma }}</td>
         <td v-if="producto.comprar === 1" class="comp_sel">
             <font-awesome-icon class="icon_btn" icon="fa-solid fa-basket-shopping" size = "xs"
             @click="upComprar(producto)"/>
@@ -74,6 +75,7 @@ import axios from 'axios'
                 error_prod_text: "",
                 cod_lista_curso: 0,
                 search: '',
+                idioma: "",
                 productos:[{
                 }],
                 compra:[{
@@ -213,6 +215,7 @@ import axios from 'axios'
             },
         },
         mounted(){
+            this.idioma = localStorage.getItem('idioma')
             this.cargarDatos()
             this.cargarCompraCurso()
             if (this.tipo ===2){

@@ -6,7 +6,7 @@
                 <v-col cols="12">
                     <v-text-field v-model="name" :rules="[rules.required]" label="First Name" maxlength="20" required></v-text-field>
                 </v-col>
-                <v-col>
+                <v-col cols="12">
                     <v-select
                         v-model="idioma"
                         :items="languages"

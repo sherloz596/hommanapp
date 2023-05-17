@@ -10,7 +10,10 @@
         <v-btn class="btn" block
         
         v-for="despensa in despensas"
-        :key="despensa.id" @click="mostrar(despensa.cod_despensa,despensa.despensa)">{{ despensa.despensa }}</v-btn>      
+        :key="despensa.id" @click="mostrar(despensa.cod_despensa,despensa.despensa)">
+        <span v-if="idioma === 'SPA'">{{ despensa.despensa }}</span>
+        <span v-else>{{ despensa.idioma }}</span>
+        </v-btn>      
     <v-btn class="add_btn" density="default"  icon="mdi-plus" @click="add_despensa"></v-btn>
     </div>
     <!-- Cuadro diálogo para mostrar productos -->
@@ -107,6 +110,7 @@ import DespensasTabla from '../components/DespensasTabla.vue';
                 err_despensas: "",
                 err_despensas_text: "",
                 ver_despensa: 0,
+                idioma: "",
                 rules: {
                     required: value => !!value || "Obligatorio",
                     max: v => (v && v.length <= 20) || "Máximo 20 caracteres"
@@ -131,6 +135,7 @@ import DespensasTabla from '../components/DespensasTabla.vue';
                 
                 })
                 .catch(error => {
+                    console.log(error)
                     if (error.response.status != 0){
                         this.err_despensas_text = "Se ha producido un error"
                         this.err_despensas = true
@@ -194,6 +199,7 @@ import DespensasTabla from '../components/DespensasTabla.vue';
             }
         },
         mounted(){
+            this.idioma = localStorage.getItem('idioma')
             this.cargarDespensas()
         } 
     }

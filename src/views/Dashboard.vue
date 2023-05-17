@@ -30,27 +30,52 @@ import FootBar from '../components/FootBar.vue';
             upSeleccionado(){
                 if(this.$route.path === "/dashboard/despensas"){
                     this.seleccionado = "despensas"
-                    this.titulo = 'Despensas'
+                    if (localStorage.getItem('idioma')=== "SPA"){
+                        this.titulo = 'Despensas'
+                    }else{
+                        this.titulo = 'Pantries'
+                    }
                 }
                 if(this.$route.path === "/dashboard/compra"){
                     this.seleccionado = "compra"
-                    this.titulo = 'Lista de la compra'
+                    if (localStorage.getItem('idioma')=== "SPA"){
+                        this.titulo = 'Lista de la compra'
+                    }else{
+                        this.titulo = 'Shopping list'
+                    }
                 }
                 if(this.$route.path === "/dashboard/favoritos"){
                     this.seleccionado = "favoritos"
-                    this.titulo = 'Lista de favoritos'
+                    if (localStorage.getItem('idioma')=== "SPA"){
+                        this.titulo = 'Favoritos'
+                    }else{
+                        this.titulo = 'Favorites'
+                    }
                 }
                 if(this.$route.path === "/dashboard/productos"){
                     this.seleccionado = "productos"
-                    this.titulo = 'Lista de productos'
+                    if (localStorage.getItem('idioma')=== "SPA"){
+                        this.titulo = 'Lista de productos'
+                    }else{
+                        this.titulo = 'Products list'
+                    }
                 }
                 if(this.$route.path === "/dashboard/unidades"){
                     this.seleccionado = ""
-                    this.titulo = 'Lista de unidades'
+                    if (localStorage.getItem('idioma')=== "SPA"){
+                        this.titulo = 'Lista de unidades'
+                    }else{
+                        this.titulo = 'Units list'
+                    }
                 }
                 if(this.$route.path === "/dashboard/invitar"){
                     this.seleccionado = ""
-                    this.titulo = 'Invitar usuarios'
+                    if (localStorage.getItem('idioma')=== "SPA"){
+                        this.titulo = 'Invitar usuarios'
+                    }else{
+                        this.titulo = 'Invite users'
+                    }
+                    
                 }
             }
         },

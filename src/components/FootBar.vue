@@ -7,7 +7,8 @@
         v-if="seleccionado === 'despensas'"
         @click="despensas">
         <font-awesome-icon icon="fa-solid fa-door-closed" size="xl" />  
-          <span>Despensas</span>
+          <span v-if="idioma==='SPA'">Despensas</span>
+          <span v-else>Pastries</span>
         </v-btn>
 
         <v-btn v-else
@@ -20,7 +21,8 @@
         v-if="seleccionado === 'compra'"
         @click="compra">
         <font-awesome-icon icon="fa-solid fa-basket-shopping" size="xl" />
-          <span>Lista compra</span>
+          <span v-if="idioma==='SPA'">Lista compra</span>
+          <span v-else>Shopping list</span>
         </v-btn>
 
         <v-btn v-else
@@ -33,7 +35,8 @@
         @click="favoritos">
         <font-awesome-icon icon="fa-solid fa-star" size="xl" />
   
-          <span>Favoritos</span>
+          <span v-if="idioma==='SPA'">Favoritos</span>
+          <span v-else>Favorites</span>
         </v-btn>
 
         <v-btn v-else @click="favoritos">
@@ -44,7 +47,8 @@
         @click="productos">
             <font-awesome-icon  icon="fa-solid fa-jar" size = "xl" />
   
-          <span>Productos</span>
+          <span v-if="idioma==='SPA'">Productos</span>
+          <span v-else>Products</span>
         </v-btn>
         <v-btn v-else  @click="productos">
             <font-awesome-icon  icon="fa-solid fa-jar" size = "xl"/>
@@ -73,7 +77,7 @@
     export default {
         data: function() {
             return{
-                 
+                 idioma: ""
                 //value: 1 
             }
         },
@@ -98,6 +102,9 @@
                 this.$router.push('productos')
             }
         },
+        mounted(){
+            this.idioma = localStorage.getItem('idioma')
+        }
         // mounted() {
         //     console.log(this.$route.path)
         //     switch(this.$route.path){
