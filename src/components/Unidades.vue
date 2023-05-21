@@ -1,5 +1,6 @@
 <template>
     <div>
+    <v-btn class="add_btn" density="default"  icon="mdi-plus" @click="add_unidad"></v-btn>
         <v-alert v-if = "error_unit"
                 density="compact"
                 type="error"
@@ -7,7 +8,7 @@
                 closable
                 :text="error_unit_text"
                 ></v-alert>
-        <v-table density="compact">
+        <v-table density="compact" v-if="dialog_add===false">
       <thead>
         <tr>
           <th class="text-left">
@@ -28,20 +29,30 @@
         </tr>
       </tbody>
     </v-table>
+    <v-fade-transition hide-on-leave v-if="dialog_add">
+            <añadir @cerrar_add="close_add" 
+            :origen="origen" @reload="recargar"></añadir>
+    </v-fade-transition>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+import Añadir from '../components/Añadir.vue';
     export default {
         data: function() {
             return{
                 hay_unidades: false,
                 error_unit: false,
                 error_unit_text: "",
+                dialog_add: false,
+                origen: "unidades",
                 unidades:[{
                 }],
             }
+        },
+        components:{
+            Añadir
         },
         methods:{
             cargarUnidades:function(){
@@ -62,6 +73,13 @@ import axios from 'axios'
                             this.error_unit = true
                         }
                     })
+                },
+                close_add(){
+                this.dialog_add = false
+                // this.error_nombre = false
+            },
+                add_unidad(){
+                    this.dialog_add = !this.dialog_add
                 }
             },
             mounted(){
@@ -71,5 +89,11 @@ import axios from 'axios'
 </script>
 
 <style lang="scss" scoped>
-
+.add_btn{
+        position: fixed;
+        bottom: 12%;
+        right: 4%;
+        color: #EEEEEE;
+        background-color: #810281;
+    }
 </style>
