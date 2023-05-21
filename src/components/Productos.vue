@@ -24,12 +24,25 @@
           v-for="producto in productos"
           :key="producto.cod_producto"
         >
+        <v-row no-gutters class="columna">
+<!-- CAMBIOS RESPONSIVE -->
+    <v-col cols="1" >
         <td v-if="tipo === 4">
-            <font-awesome-icon class="edit_icon"  icon="fa-solid fa-pen" size = "xs"/>
+            <font-awesome-icon class="edit_icon"  icon="fa-solid fa-pen" size = "xs"/></td>
+            <!-- <font-awesome-icon class="del_icon" icon="fa-solid fa-trash-can" size = "xs"/></td> -->
+    </v-col>
+    <v-col cols="1" style="background-color: lightyellow;text-align: center;">
+        <td v-if="tipo === 4" style="text-align: center;">
+            <!-- <font-awesome-icon class="edit_icon"  icon="fa-solid fa-pen" size = "xs"/> -->
             <font-awesome-icon class="del_icon" icon="fa-solid fa-trash-can" size = "xs"/></td>
         <!-- <td v-if="tipo === 4"><font-awesome-icon  icon="fa-solid fa-trash-can" size = "xs"/></td> -->
+    </v-col>
+    <v-col cols="6" style="background-color: lightgreen;">
+
         <td v-if="idioma==='SPA'">{{ producto.producto }}</td>
         <td v-else>{{ producto.idioma }}</td>
+    </v-col>
+
         <td v-if="producto.comprar === 1" class="comp_sel">
             <font-awesome-icon class="icon_btn" icon="fa-solid fa-basket-shopping" size = "xs"
             @click="upComprar(producto)"/>
@@ -47,6 +60,7 @@
             @click="upFavorito(producto)"/>
         </td>
           <!-- <td>{{ producto.cantidad }}</td> -->
+        </v-row>
         </tr>
         <tr>
             <td></td>
@@ -249,5 +263,13 @@ import axios from 'axios'
     }
     .tabla{
         background-color: #EEEEEE;
+    }
+    .columna{
+        background-color: lightcoral;
+        // text-align: center;
+        // padding-top: 20%;
+        // padding-bottom: 1%;
+        height: 5vh;
+        justify-content: center;
     }
 </style>

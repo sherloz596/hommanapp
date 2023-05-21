@@ -3,6 +3,12 @@
         <v-bottom-navigation
         class="pie"
       >
+      <v-row no-gutters>
+        <v-col  sm="3" lg="3" :style="estilo_desp">
+      <!-- <v-sheet class="ma-2 pa-2">
+            One of three columns
+          </v-sheet> -->
+        
         <v-btn class="seleccionado"
         v-if="seleccionado === 'despensas'"
         @click="despensas">
@@ -10,13 +16,15 @@
           <span v-if="idioma==='SPA'">Despensas</span>
           <span v-else>Pastries</span>
         </v-btn>
-
+<!-- CAMBIOS RESPONSIVE -->
         <v-btn v-else
-        @click="despensas">
-        <font-awesome-icon icon="fa-solid fa-door-closed" size="xl" />  
+        @click="despensas"
+        style="width: 100%;">
+        <font-awesome-icon icon="fa-solid fa-door-closed" size="xl"/>  
           <!-- <span>Video</span> -->
         </v-btn>
-  
+    </v-col>
+    <v-col cols="3" xs="3" lg="3" :style="estilo_comp">
         <v-btn class="seleccionado"
         v-if="seleccionado === 'compra'"
         @click="compra">
@@ -26,10 +34,12 @@
         </v-btn>
 
         <v-btn v-else
-        @click="compra">
+        @click="compra"
+        style="width: 100%;">
         <font-awesome-icon icon="fa-solid fa-basket-shopping" size="xl" />
           </v-btn>
-
+        </v-col>
+        <v-col cols="3" xs="3" lg="3" :style="estilo_fav">
         <v-btn class="seleccionado"
         v-if="seleccionado === 'favoritos'"
         @click="favoritos">
@@ -39,10 +49,12 @@
           <span v-else>Favorites</span>
         </v-btn>
 
-        <v-btn v-else @click="favoritos">
+        <v-btn v-else @click="favoritos"
+        style="width: 100%;">
             <font-awesome-icon icon="fa-solid fa-star" size="xl" />
           </v-btn>
-  
+        </v-col>
+        <v-col cols="3" xs="3" lg="3" :style="estilo_prod">
         <v-btn class="seleccionado" v-if="seleccionado === 'productos'"
         @click="productos">
             <font-awesome-icon  icon="fa-solid fa-jar" size = "xl" />
@@ -50,9 +62,12 @@
           <span v-if="idioma==='SPA'">Productos</span>
           <span v-else>Products</span>
         </v-btn>
-        <v-btn v-else  @click="productos">
+        <v-btn v-else  @click="productos"
+        style="width: 100%;">
             <font-awesome-icon  icon="fa-solid fa-jar" size = "xl"/>
           </v-btn>
+        </v-col>
+        </v-row>
       </v-bottom-navigation>
         <!-- <footer class="pie">
             <div class="foot_btn">
@@ -77,12 +92,17 @@
     export default {
         data: function() {
             return{
-                 idioma: ""
+                 idioma: "",
+                 //estilo: "background-color: red;text-align: center;"
                 //value: 1 
             }
         },
         props:{
-            seleccionado: ''
+            seleccionado: '',
+            estilo_desp: '',
+            estilo_comp: '',
+            estilo_fav: '',
+            estilo_prod: ''
         },
         methods:{
             despensas(){
@@ -148,5 +168,6 @@
     .seleccionado{
         color: #810281;
         background-color: #EEEEEE;
+        width: 100%;
     }
 </style>

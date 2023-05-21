@@ -7,7 +7,13 @@
             <router-view/>
         </div>
         <div class="main__pie">
-            <foot-bar :seleccionado="seleccionado"></foot-bar>
+            <foot-bar 
+            :seleccionado="seleccionado"
+            :estilo_desp="estilo_desp"
+            :estilo_comp="estilo_comp"
+            :estilo_fav="estilo_fav"
+            :estilo_prod="estilo_prod"
+            ></foot-bar>
         </div>
     </div>
 </template>
@@ -30,6 +36,11 @@ import FootBar from '../components/FootBar.vue';
             upSeleccionado(){
                 if(this.$route.path === "/dashboard/despensas"){
                     this.seleccionado = "despensas"
+                    this.estilo_desp = "background-color: #EEEEEE;text-align: center;"
+                    this.estilo_comp = "background-color: #810281;text-align: center;"
+                    this.estilo_fav = "background-color: #810281;text-align: center;"
+                    this.estilo_prod = "background-color: #810281;text-align: center;"
+
                     if (localStorage.getItem('idioma')=== "SPA"){
                         this.titulo = 'Despensas'
                     }else{
@@ -43,6 +54,10 @@ import FootBar from '../components/FootBar.vue';
                     }else{
                         this.titulo = 'Shopping list'
                     }
+                    this.estilo_desp = "background-color: #810281;text-align: center;"
+                    this.estilo_comp = "background-color: #EEEEEE;text-align: center;"
+                    this.estilo_fav = "background-color: #810281;text-align: center;"
+                    this.estilo_prod = "background-color: #810281;text-align: center;"
                 }
                 if(this.$route.path === "/dashboard/favoritos"){
                     this.seleccionado = "favoritos"
@@ -51,6 +66,10 @@ import FootBar from '../components/FootBar.vue';
                     }else{
                         this.titulo = 'Favorites'
                     }
+                    this.estilo_desp = "background-color: #810281;text-align: center;"
+                    this.estilo_comp = "background-color: #810281;text-align: center;"
+                    this.estilo_fav = "background-color: #EEEEEE;text-align: center;"
+                    this.estilo_prod = "background-color: #810281;text-align: center;"
                 }
                 if(this.$route.path === "/dashboard/productos"){
                     this.seleccionado = "productos"
@@ -59,6 +78,10 @@ import FootBar from '../components/FootBar.vue';
                     }else{
                         this.titulo = 'Products list'
                     }
+                    this.estilo_desp = "background-color: #810281;text-align: center;"
+                    this.estilo_comp = "background-color: #810281;text-align: center;"
+                    this.estilo_fav = "background-color: #810281;text-align: center;"
+                    this.estilo_prod = "background-color: #EEEEEE;text-align: center;"
                 }
                 if(this.$route.path === "/dashboard/unidades"){
                     this.seleccionado = ""
@@ -67,6 +90,10 @@ import FootBar from '../components/FootBar.vue';
                     }else{
                         this.titulo = 'Units list'
                     }
+                    this.estilo_desp = "background-color: #810281;text-align: center;"
+                    this.estilo_comp = "background-color: #810281;text-align: center;"
+                    this.estilo_fav = "background-color: #810281;text-align: center;"
+                    this.estilo_prod = "background-color: #810281;text-align: center;"
                 }
                 if(this.$route.path === "/dashboard/invitar"){
                     this.seleccionado = ""
@@ -75,6 +102,10 @@ import FootBar from '../components/FootBar.vue';
                     }else{
                         this.titulo = 'Invite users'
                     }
+                    this.estilo_desp = "background-color: #810281;text-align: center;"
+                    this.estilo_comp = "background-color: #810281;text-align: center;"
+                    this.estilo_fav = "background-color: #810281;text-align: center;"
+                    this.estilo_prod = "background-color: #810281;text-align: center;"
                     
                 }
             }
