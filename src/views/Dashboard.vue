@@ -25,7 +25,11 @@ import FootBar from '../components/FootBar.vue';
         data(){
             return{
                 seleccionado: '',
-                titulo: ''
+                titulo: '',
+                estilo_desp: '',
+                estilo_comp: '',
+                estilo_fav: '',
+                estilo_prod: ''
             }
         },
         components:{

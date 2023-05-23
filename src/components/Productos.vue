@@ -31,7 +31,8 @@
     <v-col lg="1" class="d-flex" style="background-color: #810281;"></v-col>
     <v-col cols="1" class="d-flex justify-center align-center">
         <td v-if="tipo === 4">
-            <font-awesome-icon class="edit_icon"  icon="fa-solid fa-pen" size = "xs"/></td>
+            <font-awesome-icon class="edit_icon"  icon="fa-solid fa-pen" size = "xs"
+            @click="editProducto(producto)"/></td>
             <!-- <font-awesome-icon class="del_icon" icon="fa-solid fa-trash-can" size = "xs"/></td> -->
     </v-col>
     <v-col cols="1" class="d-flex justify-center align-center">
@@ -92,7 +93,12 @@
         </div>
         <v-fade-transition hide-on-leave v-if="dialog_add">
             <añadir @cerrar_add="close_add" 
-            :origen="origen" @reload="recargar"></añadir>
+            :origen="origen" 
+            :cod_item="cod_item"
+            :nom_item="nom_item"
+            :nom_idioma="nom_idioma"
+            :item="item"
+             @reload="recargar"></añadir>
         <!-- <v-card
           v-if="dialog_add"
           append-icon="$close"
@@ -185,9 +191,13 @@ import Añadir from '../components/Añadir.vue';
                 dialog_add: false,
                 nom_producto: "",
                 error_nombre: false,
-                origen: "productos",
+                origen: "",
                 del_dialog: false,
                 eliminar: null,
+                cod_item: null,
+                nom_item: "",
+                nom_idioma: "",
+                item: undefined,
                 productos:[{}],
                 compra:[{
                 }],
@@ -332,11 +342,20 @@ import Añadir from '../components/Añadir.vue';
                 return "getprod"
             },
             add_producto(){
+                this.origen = "productos"
                 this.dialog_add = !this.dialog_add
             },
             close_add(){
                 this.dialog_add = false
                 // this.error_nombre = false
+            },
+            editProducto(producto){
+                this.origen = "edit_prod"
+                // this.cod_item = producto.cod_producto
+                // this.nom_item = producto.producto
+                // this.nom_idioma = producto.idioma
+                this.item = producto
+                this.dialog_add = true
             },
             delProducto(cod_producto){
                 this.del_dialog = true
@@ -345,6 +364,7 @@ import Añadir from '../components/Añadir.vue';
             async del_ok(){
                 await axios.delete('productos/'+this.eliminar)
                 .catch(error => {
+                    console.log(error)
                       if (error.response.status != 0){
                           this.error_prod_text = "Se ha producido un error"
                           this.error_prod = true
