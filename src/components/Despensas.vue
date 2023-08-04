@@ -33,9 +33,52 @@
             @click="delDespensa()"/>
             <v-btn icon="$close" variant="text" @click="dialog = false"></v-btn>
           </template>
-          <despensas-tabla :cod_despensa="ver_despensa"></despensas-tabla>
+          <despensas-tabla :cod_despensa="ver_despensa" ref="despensasTabla" ></despensas-tabla>
+          <div v-if="add_alma">
+            <v-divider class="border-opacity-75" 
+            :thickness="3"
+            style="margin-top: 20px;margin-bottom: 20px;"></v-divider>
+            <span><h3>Nuevo almacenaje</h3></span>
+            <!-- v-model="producto[producto.cod_producto]" -->
+            <v-select
+                class="combo"
+              v-model="producto"
+              :items="productos"
+              item-title="producto"
+              item-value="cod_producto"
+            ></v-select>
+            <v-text-field
+                class="in_cant"
+                label="Cantidad"
+                v-model="cantidad"
+                hide-details
+                single-line
+                compact
+                type="number"/>
+            <v-select
+                class="combo"
+              v-model="unit"
+              :items="unidades"
+              item-title="unidad"
+              item-value="cod_unidad"
+            ></v-select>
+            <v-btn @click="almaOk" style="margin-right: 40px;">Aceptar</v-btn>
+            <v-btn @click="cancelAlma">Cancelar</v-btn>
+          </div>
           <div class="pa-4 text-end">
             <v-btn
+              v-if="!add_alma"
+              class="text-none"
+              color="medium-emphasis"
+              min-width="92"
+              rounded
+              variant="outlined"
+              @click="add_alma = true"
+            >
+              Almacenar
+            </v-btn>
+            <v-btn
+              v-if="!add_alma"
               class="text-none"
               color="medium-emphasis"
               min-width="92"
@@ -43,7 +86,7 @@
               variant="outlined"
               @click="dialog = false"
             >
-              Close
+              Cerrar
             </v-btn>
           </div>
         </v-card>
@@ -56,7 +99,7 @@
           <v-card-title class="text-h5">
             Eliminar
           </v-card-title>
-          <v-card-text>¿Está seguro de eliminar el producto?</v-card-text>
+          <v-card-text>¿Está seguro de eliminar la despensa?</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -83,47 +126,7 @@
             :origen="origen" 
             :item="item"
              @reload="recargar"></añadir>
-        <!-- <v-card
-          v-if="dialog_add"
-          append-icon="$close"
-          class="mx-auto"
-          elevation="16"
-          width="100%"
-          title="Nueva despensa"
-        >
-          <template v-slot:append>
-            <v-btn icon="$close" variant="text" @click="close_add"></v-btn>
-          </template>
-          <v-text-field v-model="nom_despensa" :rules="[rules.required, rules.max]" label="Nombre despensa" maxlength="20" required></v-text-field>
-          <div class="pa-4 text-center">
-            <v-alert v-if = "error_nombre"
-                density="compact"
-                type="error"
-                variant="tonal"
-                closable
-                :text="err_nom_text"
-                ></v-alert>
-            <v-btn
-              class="add_ok text-none"
-              color="medium-emphasis"
-              rounded
-              variant="outlined"
-              @click="add_ok"
-            >
-              Añadir
-            </v-btn>
-            <v-btn
-              class="text-none"
-              color="medium-emphasis"
-              min-width="92"
-              rounded
-              variant="outlined"
-              @click="close_add"
-            >
-              Cancelar
-            </v-btn>
-          </div>
-        </v-card> -->
+        
       </v-fade-transition>
 </template>
 
@@ -153,6 +156,12 @@ import Añadir from '../components/Añadir.vue';
                 idioma: "",
                 origen: "",
                 despensa_sel: {},
+                productos:[{}],
+                producto:[],
+                unidades: [{}],
+                unit:[],
+                cantidad: null,
+                add_alma: false,
                 rules: {
                     required: value => !!value || "Obligatorio",
                     max: v => (v && v.length <= 20) || "Máximo 20 caracteres"
@@ -180,6 +189,7 @@ import Añadir from '../components/Añadir.vue';
                 .catch(error => {
                     console.log(error)
                     if (error.response.status != 0){
+                        location.reload()
                         this.err_despensas_text = "Se ha producido un error"
                         this.err_despensas = true
                     }
@@ -226,53 +236,76 @@ import Añadir from '../components/Añadir.vue';
                 this.item = this.despensa_sel
                 this.dialog_add = true
             },
-            // async add_ok(){
-            //     var nom_despensa = this.nom_despensa.trim()
-            //     var coincide = false
+            async cargarProductos(){
+                await axios.get('productos')
+                .then ((respuesta) =>{
+                    if(respuesta.status === 200){
+                        this.productos = respuesta.data
+                    }
+                })
+                .catch(error => {
+                    if (error.response.status != 0){
+                        this.error_prod_text = "Se ha producido un error"
+                        this.error_prod = true
+                    }
+                })
+            },
+            async cargaUnidades(){
+                await axios.get('units')
+                .then ((respuesta) =>{
+                    this.unidades = respuesta.data
+                })
+                .catch(error => {
+                    if (error.response.status != 0){
+                        this.error_carga_text = "Se ha producido un error"
+                        this.error_carga = true
+                    }
+                })
+            },
+            cancelAlma(){
+              this.add_alma = false
+              this.producto = []
+              this.cantidad = []
+              this.unit = []
+            },
+            async almaOk(){
+          console.log(this.producto)
+          console.log(this.cantidad)
+          console.log(this.unit)
+                if (this.producto != "" & this.unit != "" & this.cantidad > 0){
+                    let payload = {
+                        cod_producto: this.producto,
+                        cod_despensa: this.ver_despensa,
+                        cod_unidad: this.unit,
+                        cantidad: this.cantidad
+                    }
+                    await axios.post('almacenajes',payload)
+                    .then ((respuesta) =>{
+                        if (respuesta.data!= undefined){
+                          this.producto = []
+                          this.cantidad = []
+                          this.unit = []
+                          this.$refs.despensasTabla.cargarProductos()
+                          this.add_alma = false
 
-            //     for (var i = 0;i<this.despensas.length;i++){
-            //         console.log(nom_despensa.toLocaleUpperCase())
-            //         if (nom_despensa.toLocaleUpperCase() === this.despensas[i].despensa.toLocaleUpperCase()){
-            //             coincide = true
-            //             break
-            //         }
-            //     }
-            //     if (nom_despensa != null & nom_despensa != "" & nom_despensa.length <= 20 
-            //     & coincide === false){
-            //         var data = {
-            //         despensa: this.nom_despensa,
-            //         idioma: ""
-            //         }
-            //         await axios.post('despensas',data)
-            //         .then (respuesta =>{
-            //         if (respuesta.data.despensa === nom_despensa){
-            //             this.cargarDespensas()
-            //             this.dialog_add = false
-            //         }
-            //     })
-            //     .catch(error => {
-            //         console.log(error)
-            //          console.log(error.response.status);
-            //          if (error.response.status === 401){
-            //             this.err_nom_text = "Se ha producido un error"
-            //             this.error_nombre = true
-            //          }
-            //     })
-            //     }else{
-            //         if (coincide){
-            //             this.err_nom_text = "El nombre ya está en uso"
-            //             this.error_nombre = true
-            //         }else{
-            //             this.err_nom_text = "Nombre no válido"
-            //             this.error_nombre = true
-            //         }
-                    
-            //     }
-            // }
+                        }
+                    })
+                    .catch(error => {
+                        if (error){
+                            if (error.response.status != 0){
+                                this.error_carga_text = "Se ha producido un error"
+                                this.error_carga = true
+                            }
+                        }
+                    })
+                }
+            },
         },
         mounted(){
             this.idioma = localStorage.getItem('idioma')
             this.cargarDespensas()
+            this.cargarProductos()
+            this.cargaUnidades()
         } 
     }
 </script>
@@ -290,12 +323,9 @@ import Añadir from '../components/Añadir.vue';
     .add_btn{
         position: fixed;
         bottom: 12%;
-        right: 4%;
+        right: 15%;
         color: #EEEEEE;
         background-color: #810281;
-    }
-    .add_ok{
-        margin-right: 10px;
     }
     .edit_icon{
         margin-right: 15px;

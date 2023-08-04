@@ -1,6 +1,6 @@
 <template>
     <div>
-    <v-btn class="add_btn" density="default"  icon="mdi-plus" @click="add_producto"></v-btn>
+    <v-btn v-if="tipo != 3" class="add_btn" density="default"  icon="mdi-plus" @click="add_producto"></v-btn>
         <v-alert v-if = "error_prod"
                 density="compact"
                 type="error"
@@ -9,14 +9,7 @@
                 :text="error_prod_text"
                 ></v-alert>
         <div v-if="error_prod === false & dialog_add === false">
-                <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Search"
-          single-line
-          hide-details
-        ></v-text-field>
-        <v-table class="tabla" density="compact" :search="search" :items="productos">
+        <v-table class="tabla" density="compact" :items="productos">
             <h2>{{ despensa }}</h2>
       <thead>
 
@@ -27,7 +20,7 @@
           :key="producto.cod_producto"
         >
         <v-row no-gutters class="columna">
-<!-- CAMBIOS RESPONSIVE -->
+
     <v-col lg="1" class="d-flex" style="background-color: #810281;"></v-col>
     <v-col cols="1" class="d-flex justify-center align-center">
         <td v-if="tipo === 4">
@@ -74,18 +67,10 @@
           <!-- <td>{{ producto.cantidad }}</td> -->
         </v-row>
         </tr>
-        <tr>
-            <v-col lg="1" class="d-flex" style="background-color: #810281;"></v-col>
-            <v-col cols="12" lg="10" class="d-flex" style="background-color: #EEEEEE;"></v-col>
-            <v-col lg="1" class="d-flex" style="background-color: #810281;"></v-col>
-        </tr>
         <!-- <tr>
             <v-col lg="1" class="d-flex" style="background-color: #810281;"></v-col>
             <v-col cols="12" lg="10" class="d-flex" style="background-color: #EEEEEE;"></v-col>
             <v-col lg="1" class="d-flex" style="background-color: #810281;"></v-col>
-        </tr> -->
-        <!-- <tr>
-            <td></td>
         </tr> -->
 
             </tbody>
@@ -186,7 +171,6 @@ import Añadir from '../components/Añadir.vue';
                 error_prod: false,
                 error_prod_text: "",
                 cod_lista_curso: 0,
-                search: '',
                 idioma: "",
                 dialog_add: false,
                 nom_producto: "",
@@ -423,7 +407,7 @@ import Añadir from '../components/Añadir.vue';
     .add_btn{
         position: fixed;
         bottom: 12%;
-        right: 4%;
+        right: 15%;
         color: #EEEEEE;
         background-color: #810281;
     }

@@ -12,6 +12,9 @@
           </template>
           <v-text-field v-model="nombre" :rules="[rules.required, rules.max]" 
           :label="etiqueta" maxlength="20" required></v-text-field>
+          <v-text-field v-if = "origen ==='tareas' | origen ==='edit_tarea'" v-model="frecuencia" :rules="[rules.required, rules.max]" 
+          :label="etiq_frec" maxlength="20" required></v-text-field>
+          <v-checkbox v-if = "origen === 'edit_tarea'" label="Reset último realizado" v-model="check_reset"></v-checkbox>
           <div class="pa-4 text-center">
             <v-alert v-if = "error_nombre"
                 density="compact"
@@ -60,7 +63,11 @@ import axios from 'axios'
                 despensas: [{}],
                 productos:[{}],
                 unidades:[{}],
+                tareas:[{}],
                 idioma:"",
+                etiq_frec: "Frecuencia",
+                frecuencia:"",
+                check_reset: false,
                 rules: {
                     required: value => !!value || "Obligatorio",
                     max: v => (v && v.length <= 20) || "Máximo 20 caracteres"
@@ -92,6 +99,9 @@ import axios from 'axios'
                     case "unidades":
                         this.add_unidad()
                         break
+                    case "tareas":
+                        this.add_tarea()
+                        break
                     case "edit_despensa":
                         this.editDespensa()
                         break
@@ -100,6 +110,9 @@ import axios from 'axios'
                         break
                     case "edit_unit":
                         this.editUnit()
+                        break
+                    case "edit_tarea":
+                        this.editTarea()
                         break
                 }
             },
@@ -247,6 +260,101 @@ import axios from 'axios'
                     }
                 }
             },
+            async add_tarea(){
+                var nom_tarea = this.nombre.trim()
+                var frecuencia = this.frecuencia.trim()
+                var coincide = false
+                for (var i = 0;i<this.tareas.length;i++){
+                    if(this.tareas[i].tarea != undefined)
+                        if (nom_tarea.toLocaleUpperCase() === this.tareas[i].tarea.toLocaleUpperCase()){
+                            coincide = true
+                            break
+                        }
+                }
+                    
+                if (nom_tarea != null & nom_tarea != "" & nom_tarea.length <= 20 
+                & coincide === false){
+                    var data = {
+                    tarea: nom_tarea,
+                    frecuencia: frecuencia,
+                    ultimo_realizado: "-"
+                    }
+                    await axios.post('tareas',data)
+                    .then (respuesta =>{
+                    if (respuesta.data.tarea === nom_tarea){
+                        this.$emit('reload')
+                        this.close_add()
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                     console.log(error.response.status);
+                     if (error.response.status === 401){
+                        this.err_nom_text = "Se ha producido un error"
+                        this.error_nombre = true
+                     }
+                })
+                }else{
+                    if (coincide){
+                        this.err_nom_text = "La tarea ya existe"
+                        this.error_nombre = true
+                    }else{
+                        this.err_nom_text = "Descripción de tarea no válida"
+                        this.error_nombre = true
+                    }
+                }
+            },
+            async editTarea(){
+                var nom_tarea = this.nombre.trim()
+                var frecuencia = this.frecuencia.trim()
+                var ultimo 
+                if (this.check_reset === true){
+                    ultimo = "-" 
+                }else{
+                    ultimo = this.item.ultimo_realizado
+                }
+
+                var coincide = false
+                for (var i = 0;i<this.tareas.length;i++){
+                    if(this.tareas[i].tarea != undefined)
+                        if (nom_tarea.toLocaleUpperCase() === this.tareas[i].tarea.toLocaleUpperCase()){
+                            //coincide = true
+                            break
+                        }
+                }
+                    
+                if (nom_tarea != null & nom_tarea != "" & nom_tarea.length <= 20 
+                & coincide === false){
+                    var data = {
+                    tarea: nom_tarea,
+                    frecuencia: frecuencia,
+                    ultimo_realizado: ultimo
+                    }
+                    await axios.put('tareas/'+this.item.cod_tarea,data)
+                    .then (respuesta =>{
+                    if (respuesta.data.tarea === nom_tarea){
+                        this.$emit('reload')
+                        this.close_add()
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                     console.log(error.response.status);
+                     if (error.response.status === 401){
+                        this.err_nom_text = "Se ha producido un error"
+                        this.error_nombre = true
+                     }
+                })
+                }else{
+                    if (coincide){
+                        this.err_nom_text = "La tarea ya existe"
+                        this.error_nombre = true
+                    }else{
+                        this.err_nom_text = "Descripción de tarea no válida"
+                        this.error_nombre = true
+                    }
+                }
+            },
             async editDespensa(){
                 console.log("CHECK")
                 var nom_despensa = this.nombre.trim()
@@ -315,12 +423,8 @@ import axios from 'axios'
                             }                       
                         }
                     }
-                    console.log("nombre: "+nom_producto)
-                    console.log("idioma: "+nom_producto)
                     if (nom_producto != null & nom_producto != "" & nom_producto.length <= 20 
                 & coincide === false){
-                    console.log("nombre: "+nom_producto)
-                    console.log("idioma: "+nom_producto)
                     var data = {
                     producto: nom_producto,
                     idioma: nom_producto,
@@ -438,6 +542,10 @@ import axios from 'axios'
                             this.etiqueta = "Unit"  
                         }
                         break 
+                    case "tareas":
+                        this.titulo = "Nueva tarea"
+                        this.etiqueta = "Tarea"
+                        break 
                     case "edit_despensa":
                         if (this.idioma === 'SPA'){
                             this.titulo = "Editar despensa"
@@ -461,6 +569,13 @@ import axios from 'axios'
                             this.etiqueta = "Product" 
                             this.nombre = this.item.idioma
                         }
+                        break
+                    case "edit_tarea":
+                        this.titulo = "Editar tarea"
+                        this.etiqueta = "Tarea"
+                        this.frecuencia = this.item.frecuencia
+                        this.nombre = this.item.tarea
+
                         break
                     case "edit_unit":
                         if (this.idioma === 'SPA'){
@@ -534,6 +649,16 @@ import axios from 'axios'
                 .catch(error => {
                 })
             },
+            async cargarTareas(){
+                await axios.get('tareas')
+                .then ((respuesta) =>{
+                    if(respuesta.status === 200){
+                        this.tareas = respuesta.data
+                    }
+                })
+                .catch(error => {
+                })
+            },
             cargarDatos(){
                 switch (this.origen){
                     case "despensas":
@@ -545,6 +670,9 @@ import axios from 'axios'
                     case "unidades":
                         this.cargarUnidades()
                         break
+                    case "tareas":
+                        this.cargarTareas()
+                        break
                     case "edit_despensa":
                         this.cargarDespensas()
                         break
@@ -553,6 +681,9 @@ import axios from 'axios'
                         break
                     case "edit_unit":
                         this.cargarUnidades()
+                        break
+                    case "edit_tarea":
+                        this.cargarTareas()
                         break
                 }
             }

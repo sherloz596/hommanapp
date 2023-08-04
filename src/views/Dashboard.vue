@@ -13,6 +13,7 @@
             :estilo_comp="estilo_comp"
             :estilo_fav="estilo_fav"
             :estilo_prod="estilo_prod"
+            :estilo_tar = "estilo_tar"
             ></foot-bar>
         </div>
     </div>
@@ -29,7 +30,8 @@ import FootBar from '../components/FootBar.vue';
                 estilo_desp: '',
                 estilo_comp: '',
                 estilo_fav: '',
-                estilo_prod: ''
+                estilo_prod: '',
+                estilo_tar:''
             }
         },
         components:{
@@ -44,6 +46,7 @@ import FootBar from '../components/FootBar.vue';
                     this.estilo_comp = "background-color: #810281;text-align: center;"
                     this.estilo_fav = "background-color: #810281;text-align: center;"
                     this.estilo_prod = "background-color: #810281;text-align: center;"
+                    this.estilo_tar = "background-color: #810281;text-align: center;"
 
                     if (localStorage.getItem('idioma')=== "SPA"){
                         this.titulo = 'Despensas'
@@ -62,6 +65,7 @@ import FootBar from '../components/FootBar.vue';
                     this.estilo_comp = "background-color: #EEEEEE;text-align: center;"
                     this.estilo_fav = "background-color: #810281;text-align: center;"
                     this.estilo_prod = "background-color: #810281;text-align: center;"
+                    this.estilo_tar = "background-color: #810281;text-align: center;"
                 }
                 if(this.$route.path === "/dashboard/favoritos"){
                     this.seleccionado = "favoritos"
@@ -74,6 +78,7 @@ import FootBar from '../components/FootBar.vue';
                     this.estilo_comp = "background-color: #810281;text-align: center;"
                     this.estilo_fav = "background-color: #EEEEEE;text-align: center;"
                     this.estilo_prod = "background-color: #810281;text-align: center;"
+                    this.estilo_tar = "background-color: #810281;text-align: center;"
                 }
                 if(this.$route.path === "/dashboard/productos"){
                     this.seleccionado = "productos"
@@ -86,6 +91,20 @@ import FootBar from '../components/FootBar.vue';
                     this.estilo_comp = "background-color: #810281;text-align: center;"
                     this.estilo_fav = "background-color: #810281;text-align: center;"
                     this.estilo_prod = "background-color: #EEEEEE;text-align: center;"
+                    this.estilo_tar = "background-color: #810281;text-align: center;"
+                }
+                if(this.$route.path === "/dashboard/tareas"){
+                    this.seleccionado = "tareas"
+                    if (localStorage.getItem('idioma')=== "SPA"){
+                        this.titulo = 'Lista de tareas'
+                    }else{
+                        this.titulo = 'Task list'
+                    }
+                    this.estilo_desp = "background-color: #810281;text-align: center;"
+                    this.estilo_comp = "background-color: #810281;text-align: center;"
+                    this.estilo_fav = "background-color: #810281;text-align: center;"
+                    this.estilo_prod = "background-color: #810281;text-align: center;"
+                    this.estilo_tar = "background-color: #EEEEEE;text-align: center;"
                 }
                 if(this.$route.path === "/dashboard/unidades"){
                     this.seleccionado = ""
@@ -98,6 +117,7 @@ import FootBar from '../components/FootBar.vue';
                     this.estilo_comp = "background-color: #810281;text-align: center;"
                     this.estilo_fav = "background-color: #810281;text-align: center;"
                     this.estilo_prod = "background-color: #810281;text-align: center;"
+                    this.estilo_tar = "background-color: #810281;text-align: center;"
                 }
                 if(this.$route.path === "/dashboard/invitar"){
                     this.seleccionado = ""

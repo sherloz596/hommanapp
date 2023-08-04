@@ -12,7 +12,7 @@ import RecoveryPage from '../views/RecoveryPage.vue'
 import ResetPassPage from '../views/ResetPassPage.vue'
 import RegistroGuestPage from '../views/RegistroGuestPage.vue'
 import InvitarPage from '../views/InvitarPage.vue'
-
+import TareasPage from '../views/TareasPage.vue'
 
 const routes = [
   {
@@ -89,6 +89,11 @@ const routes = [
         path: 'productos',
         name: 'productos',
         component: ProductosPage
+      },
+      {
+        path: 'tareas',
+        name: 'tareas',
+        component: TareasPage
       },
       {
         path: 'anteriores',

@@ -38,6 +38,21 @@
             </v-row>
         </v-form>
     </v-sheet>
+    <v-snackbar
+      v-model="snackbar"
+    >
+      Se ha registrado con éxito
+
+      <template v-slot:actions>
+        <v-btn
+          color="pink"
+          variant="text"
+          @click="acceptReg"
+        >
+          Aceptar
+        </v-btn>
+      </template>
+    </v-snackbar>
 </div>
 </template>
 
@@ -66,6 +81,7 @@ export default {
             verify: "",
             loginPassword: "",
             loginEmail: "",
+            snackbar: false,
     loginEmailRules: [
       v => !!v || "Required",
       v => /.+@.+\..+/.test(v) || "E-mail must be valid"
@@ -94,6 +110,7 @@ export default {
             // submit form to server/API here...
         }*/
         var nombre = this.name.trim()
+        var hay_error = 0
         if (nombre!= null & nombre != "" & /.+@.+\..+/.test(this.email) 
         & this.password != null & this.password === this.verify & this.idioma !=null){
             if (this.idioma === "English"){
@@ -111,9 +128,13 @@ export default {
             await axios.post('register',data_register)
                     .then (respuesta =>{
                         console.log(respuesta.data)
+                        if (hay_error === 0){
+                            this.snackbar = true
+                            // this.$route.push(login)
+                        }
                     })
                     .catch(error => {
-                        console.log(error.response.status);
+                        hay_error = 1
                         if (error.response.status === 401){
                             this.error_login = true
                         }
@@ -128,6 +149,9 @@ export default {
         },
         resetValidation() {
         this.$refs.form.resetValidation();
+        },
+        acceptReg(){
+            this.$router.push('login')
         }
     },
     }

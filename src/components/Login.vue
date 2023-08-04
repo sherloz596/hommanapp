@@ -49,12 +49,13 @@ import axios from 'axios'
         },
         methods:{
             async login(){
+                var hay_error = 0
                 let data_login = {
                     email: this.email,
                     password: this.password
                 }
                 this.loading = true
-                await axios.post('login',data_login)
+                axios.post('login',data_login)
                 .then (respuesta =>{
                     if (respuesta.data.accessToken != null){
                         console.log(respuesta.data.user)
@@ -62,19 +63,38 @@ import axios from 'axios'
                         localStorage.setItem('idioma', respuesta.data.user.idioma)
                         //this.axios.defaults.headers.common['Authorization'] = 'Bearer '+ respuesta.data.accessToken
                         //  this.$router.push('dashboard/despensas')
+
                     }
                 })
+                .then (login=>{
+                if(hay_error===0){
+                    console.log(hay_error)
+                        // location.reload()
+                        this.loading = false
+                        this.$router.push('dashboard/')
+                }
+            })
+                //         this.loading = false
+                //         this.$router.push('dashboard/')
+                //     }
+                // await (hay_error=>{
+                //     console.log(hay_error)
+                //     if(hay_error===0){
+                //         this.loading = false
+                //         this.$router.push('dashboard/')
+                //     }
+                // })
                 .catch(error => {
                      console.log(error.response.status);
                      if (error.response.status === 401){
                         this.error_login = true
                      }
                 })
-                while(localStorage.getItem('token')===null){
+                // while(localStorage.getItem('token')===null){
                     
-                }
-                this.loading = false
-                this.$router.push('dashboard/despensas')
+                // }
+                // this.loading = false
+                // this.$router.push('dashboard/')
             }
         }
     }

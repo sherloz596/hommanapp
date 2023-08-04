@@ -23,11 +23,14 @@
         </div> 
 
         <div v-if="lista_vacia === false">
+            <div style="padding-left: 30px;">
+                <h3>Lista de la compra
+                    <v-btn @click="editLista()">Editar</v-btn> 
+                </h3>
+            </div>
             <v-table class="tabla" density="compact">
                 <thead>
-                    <h3>Lista de la compra
-                        <v-btn @click="editLista()">Editar</v-btn> 
-                    </h3>
+                    
                 </thead>
                 <tbody>
                     <tr
@@ -168,6 +171,7 @@ import DialogoVer from '../components/DialogoVer.vue';
                         this.error_carga = true
                     }
                 })
+                this.activaValidar()
             },
             marcarComprado:function(producto){
                 let new_estado = ""
@@ -189,7 +193,7 @@ import DialogoVer from '../components/DialogoVer.vue';
                     }
                 })
                 this.cargarCompras()
-                this.activaValidar()
+                // this.activaValidar()
             },
             activaValidar(){
                 let comprados = []

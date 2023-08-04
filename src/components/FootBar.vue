@@ -4,7 +4,8 @@
         class="pie"
       >
       <v-row no-gutters>
-        <v-col  sm="3" lg="3" :style="estilo_desp">
+        <v-col  cols="1" xs="1" lg="1"/>
+        <v-col  cols="2" xs="2" lg="2" :style="estilo_desp">
       <!-- <v-sheet class="ma-2 pa-2">
             One of three columns
           </v-sheet> -->
@@ -24,7 +25,7 @@
           <!-- <span>Video</span> -->
         </v-btn>
     </v-col>
-    <v-col cols="3" xs="3" lg="3" :style="estilo_comp">
+    <v-col cols="2" xs="2" lg="2" :style="estilo_comp">
         <v-btn class="seleccionado"
         v-if="seleccionado === 'compra'"
         @click="compra">
@@ -39,7 +40,7 @@
         <font-awesome-icon icon="fa-solid fa-basket-shopping" size="xl" />
           </v-btn>
         </v-col>
-        <v-col cols="3" xs="3" lg="3" :style="estilo_fav">
+        <v-col cols="2" xs="2" lg="2" :style="estilo_fav">
         <v-btn class="seleccionado"
         v-if="seleccionado === 'favoritos'"
         @click="favoritos">
@@ -54,7 +55,7 @@
             <font-awesome-icon icon="fa-solid fa-star" size="xl" />
           </v-btn>
         </v-col>
-        <v-col cols="3" xs="3" lg="3" :style="estilo_prod">
+        <v-col cols="2" xs="2" lg="2" :style="estilo_prod">
         <v-btn class="seleccionado" v-if="seleccionado === 'productos'"
         @click="productos">
             <font-awesome-icon  icon="fa-solid fa-jar" size = "xl" />
@@ -67,6 +68,22 @@
             <font-awesome-icon  icon="fa-solid fa-jar" size = "xl"/>
           </v-btn>
         </v-col>
+        
+
+        <v-col cols="2" xs="2" lg="2" :style="estilo_tar">
+        <v-btn class="seleccionado" v-if="seleccionado === 'tareas'"
+        @click="tareas">
+            <font-awesome-icon  icon="fa-solid fa-list-check" size = "xl" />
+  
+          <span v-if="idioma==='SPA'">Tareas</span>
+          <span v-else>Tasks</span>
+        </v-btn>
+        <v-btn v-else  @click="tareas"
+        style="width: 100%;">
+            <font-awesome-icon  icon="fa-solid fa-list-check" size = "xl"/>
+          </v-btn>
+        </v-col>
+        <v-col  cols="1" xs="1" lg="1"/>
         </v-row>
       </v-bottom-navigation>
         <!-- <footer class="pie">
@@ -102,7 +119,8 @@
             estilo_desp: '',
             estilo_comp: '',
             estilo_fav: '',
-            estilo_prod: ''
+            estilo_prod: '',
+            estilo_tar:''
         },
         methods:{
             despensas(){
@@ -120,6 +138,9 @@
             productos(){
                 //this.seleccionado = 'preferencias'
                 this.$router.push('productos')
+            },
+            tareas(){
+                this.$router.push('tareas')
             }
         },
         mounted(){
