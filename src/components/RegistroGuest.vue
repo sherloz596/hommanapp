@@ -91,10 +91,8 @@ export default {
                 }
                 await axios.post('register',data_register)
                 .then (respuesta =>{
-                    console.log(respuesta.data)
                 })
                 .catch(error => {
-                    console.log(error.response.status);
                     if (error.response.status === 401){
                         this.error_login = true
                     }

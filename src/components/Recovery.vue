@@ -1,5 +1,9 @@
 <template>
-    <div class="d-flex align-center justify-center" style="height: 100vh">
+    <div class="d-flex align-center justify-center" style="height: 25vh;margin-top: 50px;">
+
+<v-img src="imagenes\logo_hm.png"></v-img>
+</div>
+<div class="d-flex align-center justify-center" style="height: 75vh">
       <v-sheet width="400" class="mx-auto">
           <v-form class="recup_form" fast-fail @submit.prevent="recuperar">
             <h2>Recuperación de contraseña</h2>
@@ -52,7 +56,6 @@ import axios from 'axios'
                 // this.$router.push('/login')
               })
               .catch(error => {
-                   console.log(error.response.status);
                    if (error.response.status === 401){
                       this.error_login = true
                    }

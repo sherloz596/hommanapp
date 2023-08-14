@@ -13,37 +13,21 @@ import ResetPassPage from '../views/ResetPassPage.vue'
 import RegistroGuestPage from '../views/RegistroGuestPage.vue'
 import InvitarPage from '../views/InvitarPage.vue'
 import TareasPage from '../views/TareasPage.vue'
+import store from '../store'
 
 const routes = [
   {
     path: '/',
     name: 'home',
     component: LoginPage,
-    // beforeEnter: (to, from, next) => {
-    //   let token = localStorage.getItem('token')
-    //   if(token === '' | token === null){
-    //     return next({
-    //       name: 'login'
-    //     })
-    //   }else{
-    //     return next({
-    //       name: 'despensas'
-    //     })
-    //   }
-    // }
   },
   {
     path: '/login',
     name: 'login',
+    meta: {
+      requiresAuth: false
+    },
     component: LoginPage,
-    // beforeEnter: (to, from, next) => {
-    //   let token = localStorage.getItem('token')
-    //   if(token != '' | token != null){
-    //     return next({
-    //       name: 'despensas'
-    //     })
-    //   }
-    // }
   },
   {
     path: '/registro',
@@ -66,8 +50,11 @@ const routes = [
     component: RecoveryPage
   },
   {
-    path: '/Dashboard',
+    path: '/dashboard',
     name: 'dashboard',
+    meta: {
+      requiresAuth: true
+    },
     component: Dashboard,
     children:[
       {
@@ -127,5 +114,21 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (store.state.auth) {
+      next();
+    } else {
+      next({ name: "login" });
+    }
+  } else {
+    if (store.state.auth) {
+      next({ path: "dashboard/" });
+    }else{
+      next();
+    }
+  }
+});
 
 export default router

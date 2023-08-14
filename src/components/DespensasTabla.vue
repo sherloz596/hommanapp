@@ -18,18 +18,24 @@
                         <tr
                         v-for="producto in productos"
                         :key="producto.cod_producto">
-                            <td >
-                            {{ producto.producto }}:   
+                            <td v-if="idioma === 'SPA'">
+                            {{producto.producto}}:   
                             </td>
-                            <td >
+                            <td v-else>
+                            {{producto.idioma}}:   
+                            </td>
+                            <td v-if="idioma === 'SPA'">
                             {{ producto.cantidad }} {{ producto.unidad }}    
+                            </td>
+                            <td v-else>
+                            {{ producto.cantidad }} {{ producto.unidioma }}    
                             </td>
                             <td>                     
                                 <div class="sacar">
-                                    <span>Sacar:</span>
+                                    <span>{{textSacar}}:</span>
                                     <v-text-field
                                     class="in_cant"
-                                    label="Cantidad"
+                                    :label="labCantidad"
                                     v-model="cantidad[producto.cod_almacenaje]"
                                     hide-details
                                     single-line
@@ -61,7 +67,7 @@
             </div>
             <div v-else>
                 <h3>
-                    No hay productos almacenados
+                    {{text_no_prod}}
                 </h3>
             </div>
         </div>
@@ -75,6 +81,10 @@ import axios from 'axios'
             return{
                 error_carga: false,
                 error_carga_text: "",
+                text_no_prod: "",
+                idioma: "",
+                textSacar:"",
+                labCantidad: "",
                 productos: [{}],
                 pendiente: true,
                 unidades: [{}],
@@ -103,7 +113,6 @@ import axios from 'axios'
                     }
                 })
                 .catch(error => {
-                    console.log(error)
                     if (error.response.status != 0){
                         this.err_despensas_text = "Se ha producido un error"
                         this.err_despensas = true
@@ -129,7 +138,6 @@ import axios from 'axios'
                             this.cargarProductos()
                         })
                         .catch(error => {
-                            console.log(error)
                             if (error.response.status != 0){
                                 this.err_despensas_text = "Se ha producido un error"
                                 this.err_despensas = true
@@ -147,15 +155,27 @@ import axios from 'axios'
                             this.cargarProductos()
                 })
                 .catch(error => {
-                    console.log(error)
                     if (error.response.status != 0){
                         this.err_despensas_text = "Se ha producido un error"
                         this.err_despensas = true
                     }
                 })
+            },
+            cargarTextos(){
+                if (this.idioma === 'SPA'){
+                    this.text_no_prod = "No hay productos almacenados"
+                    this.textSacar = 'Sacar'
+                    this.labCantidad = 'Cantidad'
+                }else{
+                    this.text_no_prod = "No products in pantry"
+                    this.textSacar = 'Take out'
+                    this.labCantidad = 'Quantity'
+                }
             }
         },
         mounted(){
+            this.idioma = localStorage.getItem('idioma')
+            this.cargarTextos()
             this.cargarProductos()
         }
     }

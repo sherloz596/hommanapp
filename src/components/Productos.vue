@@ -134,9 +134,9 @@
       >
         <v-card>
           <v-card-title class="text-h5">
-            Eliminar
+            {{delTittle}}
           </v-card-title>
-          <v-card-text>¿Está seguro de eliminar el producto?</v-card-text>
+          <v-card-text>{{deltext}}</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -144,18 +144,22 @@
               variant="text"
               @click="del_dialog = false"
             >
-              Cancelar
+              {{delCancel}}
             </v-btn>
             <v-btn
               color="green-darken-1"
               variant="text"
               @click="del_ok"
             >
-              Aceptar
+              {{delOk}}
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <div v-if="tipo === 3 & hay_productos === false">
+        <h3 v-if="idioma === 'SPA'">No hay productos en la lista de favoritos</h3>
+        <h3 v-else>No products in favorites list</h3>
+      </div>
     </div>
 </template>
 
@@ -181,6 +185,10 @@ import Añadir from '../components/Añadir.vue';
                 cod_item: null,
                 nom_item: "",
                 nom_idioma: "",
+                deltext: "",
+                delCancel: "",
+                delOk: "",
+                delTittle: "",
                 item: undefined,
                 productos:[{}],
                 compra:[{
@@ -342,13 +350,23 @@ import Añadir from '../components/Añadir.vue';
                 this.dialog_add = true
             },
             delProducto(cod_producto){
+                if (this.idioma === 'SPA'){
+                    this.delTittle = "Eliminar"
+                    this.deltext = '¿Está seguro de eliminar el producto?'
+                    this.delCancel = 'Cancelar'
+                    this.delOk = 'Aceptar'
+                }else{
+                    this.delTittle = "Delete"
+                    this.deltext = 'Are you sure to delete the product?'
+                    this.delCancel = 'Cancel'
+                    this.delOk = 'Ok'
+                }
                 this.del_dialog = true
                 this.eliminar = cod_producto
             },
             async del_ok(){
                 await axios.delete('productos/'+this.eliminar)
                 .catch(error => {
-                    console.log(error)
                       if (error.response.status != 0){
                           this.error_prod_text = "Se ha producido un error"
                           this.error_prod = true

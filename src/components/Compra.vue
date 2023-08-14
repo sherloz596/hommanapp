@@ -18,14 +18,14 @@
                 <span v-else>Previous purchase</span>
             <v-badge v-if="hay_pendientes" inline color="red" :content="num_pendientes"></v-badge>
             <!-- </v-btn> -->
-            <span class="almac_text" v-if="hay_pendientes">Por almacenar</span>
+            <span class="almac_text" v-if="hay_pendientes">{{textPorAlmac}}</span>
         </div>
         </div> 
 
         <div v-if="lista_vacia === false">
             <div style="padding-left: 30px;">
-                <h3>Lista de la compra
-                    <v-btn @click="editLista()">Editar</v-btn> 
+                <h3>{{tituloLista}}
+                    <v-btn @click="editLista()">{{botonEdit}}</v-btn> 
                 </h3>
             </div>
             <v-table class="tabla" density="compact">
@@ -37,17 +37,29 @@
                     v-for="producto in productos"
                     :key="producto.cod_producto"
                     >
-                    <td v-if="producto.estado_producto==='En curso'">
+                    <td v-if="producto.estado_producto==='En curso' & idioma ==='SPA'">
                         <font-awesome-icon v-if="edit_lista" 
                         class="icon_btn" icon="fa-solid fa-trash-can" size = "xs"
                         @click="delProducto(producto)"/>
                         {{ producto.producto }}
                     </td>
-                    <td v-if="producto.estado_producto==='Comprado'" class="comprado">
+                    <td v-if="producto.estado_producto==='Comprado' & idioma ==='SPA'" class="comprado">
                         <font-awesome-icon v-if="edit_lista" 
                         class="icon_btn" icon="fa-solid fa-trash-can" size = "xs"
                         @click="delProducto(producto)"/>
                         {{ producto.producto }}
+                    </td>
+                    <td v-if="producto.estado_producto==='En curso' & idioma ==='ENG'">
+                        <font-awesome-icon v-if="edit_lista" 
+                        class="icon_btn" icon="fa-solid fa-trash-can" size = "xs"
+                        @click="delProducto(producto)"/>
+                        {{ producto.idioma }}
+                    </td>
+                    <td v-if="producto.estado_producto==='Comprado' & idioma ==='ENG'" class="comprado">
+                        <font-awesome-icon v-if="edit_lista" 
+                        class="icon_btn" icon="fa-solid fa-trash-can" size = "xs"
+                        @click="delProducto(producto)"/>
+                        {{ producto.idioma }}
                     </td>
                     <td v-if="producto.estado_producto==='En curso'">
                         <font-awesome-icon 
@@ -113,6 +125,9 @@ import DialogoVer from '../components/DialogoVer.vue';
                 edit_lista: false,
                 hay_pendientes: false,
                 num_pendientes: 0,
+                tituloLista: "",
+                botonEdit: "",
+                textPorAlmac: "",
                 listas:[{}],
                 listas_pendientes:[{}],
                 data_dialog_tit: "Compras anteriores",
@@ -143,7 +158,6 @@ import DialogoVer from '../components/DialogoVer.vue';
                     }
                 })
                 .catch(error => {
-                    console.log(error)
                     if (error.response.status != 0){
                         this.error_carga_text = "Se ha producido un error"
                         this.error_carga = true
@@ -156,7 +170,6 @@ import DialogoVer from '../components/DialogoVer.vue';
                     if(respuesta.status === 200){
                         this.productos = respuesta.data
                     }
-                    console.log(this.productos[0])
                     if(this.productos[0]===undefined){
                         this.lista_vacia = true
                     }else{
@@ -166,7 +179,6 @@ import DialogoVer from '../components/DialogoVer.vue';
                 })
                 .catch(error => {
                     if (error.response.status != 0){
-                        console.log(error.response)
                         this.error_carga_text = "Se ha producido un error"
                         this.error_carga = true
                     }
@@ -219,7 +231,6 @@ import DialogoVer from '../components/DialogoVer.vue';
                 })
                 .catch(error => {
                     if (error.response.status != 0){
-                        console.log(error.response)
                         this.error_carga_text = "Se ha producido un error"
                         this.error_carga = true
                     }
@@ -255,7 +266,6 @@ import DialogoVer from '../components/DialogoVer.vue';
                 await axios.delete('lista_compra_lin/'+producto.cod_linea)
                 .catch(error => {
                     if (error.response.status != 0){
-                        console.log(error.response)
                         this.error_carga_text = "Se ha producido un error"
                         this.error_carga = true
                     }
@@ -287,10 +297,22 @@ import DialogoVer from '../components/DialogoVer.vue';
                 this.borrarComprados(producto)
                 this.upComprar(producto)
                 this.cargarCompras()
+            },
+            cargarTextos(){
+                if(this.idioma === 'SPA'){
+                    this.tituloLista = 'Lista de la compra'
+                    this.botonEdit = 'Editar'
+                    this.textPorAlmac = "Por almacenar"
+                }else{
+                    this.tituloLista = 'Shopping list'
+                    this.botonEdit = 'Edit'
+                    this.textPorAlmac = "To store"
+                }
             }
         },
         mounted(){
             this.idioma = localStorage.getItem('idioma')
+            this.cargarTextos()
             this.cargarListas()
             this.cargarCompras()
         } 

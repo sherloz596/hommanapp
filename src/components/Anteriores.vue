@@ -4,6 +4,10 @@
             <div class="div_btn" v-if="lista.estado!='En curso'" 
             @click="verCompra(lista.cod_lista,lista.nombre)">
                 {{ lista.nombre }}
+                <v-badge dot inline color="red" v-if="lista.estado==='Pendiente'"></v-badge>
+                <span class="almac_text" v-if="lista.estado==='Pendiente'">{{textPorAlmac}}</span>
+                <v-badge dot inline color="green" v-if="lista.estado==='Almacenada'"></v-badge>
+                <span class="almac_text" v-if="lista.estado==='Almacenada'">{{textAlmac}}</span>
             </div>
         </div>
     </div>
@@ -28,7 +32,10 @@ import AnterioresTabla from '../components/AnterioresTabla.vue';
                 ver_anteriores: false,
                 dialog: false,
                 cod_lista: null,
-                nom_lista: ""
+                nom_lista: "",
+                textPorAlmac: "",
+                idioma: "",
+                textAlmac: ""
             }
         },
         components:{
@@ -42,15 +49,8 @@ import AnterioresTabla from '../components/AnterioresTabla.vue';
                     this.anteriores = this.listas.filter(function (lista) {
                                 return (lista.estado!="En curso")
                             });
-                    // if(this.listas_pendientes[0]===undefined){
-                    //     this.hay_pendientes = false
-                    // }else{
-                    //     this.num_pendientes = this.listas_pendientes.length
-                    //     this.hay_pendientes = true
-                    // }
                 })
                 .catch(error => {
-                    console.log(error)
                     if (error.response.status != 0){
                         this.error_carga_text = "Se ha producido un error"
                         this.error_carga = true
@@ -64,11 +64,21 @@ import AnterioresTabla from '../components/AnterioresTabla.vue';
             },
             closeDialog(){
                 this.dialog = false
+            },
+            cargarTextos(){
+                if(this.idioma === 'SPA'){
+                    this.textPorAlmac = 'Pendiente de almacenar'
+                    this.textAlmac = 'Almacenada'
+                }else{
+                    this.textPorAlmac = 'Pending to store'
+                    this.textAlmac = 'Stored'
+                }
             }
         },
         mounted(){
+            this.idioma = localStorage.getItem('idioma')
+            this.cargarTextos()
             this.cargarListas()
-            
         }    
     }
 </script>
@@ -91,5 +101,9 @@ import AnterioresTabla from '../components/AnterioresTabla.vue';
     }
     .padd{
         padding: 25px;
+    }
+    .almac_text{
+        color: #FFAFAF;
+        font-size: small;
     }
 </style>

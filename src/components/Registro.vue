@@ -4,23 +4,29 @@
         <v-form class="form_reg" ref="registerForm" v-model="valid" lazy-validation>
             <v-row>
                 <v-col cols="12">
-                    <v-text-field v-model="name" :rules="[rules.required]" label="First Name" maxlength="20" required></v-text-field>
+                    <v-text-field v-model="name" :rules="[rules.required]" :label="labNombre" maxlength="20" required></v-text-field>
                 </v-col>
                 <v-col cols="12">
                     <v-select
+                        @vnode-updated="selIdioma"
                         v-model="idioma"
                         :items="languages"
-                        label="Select language">
+                        :label="labSelLen">
                     </v-select>
                 </v-col>
                 <v-col cols="12">
                     <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                    <v-text-field v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Password" hint="At least 8 characters" counter @click:append="show1 = !show1"></v-text-field>
+                    <v-text-field v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" 
+                    :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" 
+                    name="input-10-1" label="Password" hint="At least 8 characters" 
+                    counter @click:append="show1 = !show1"></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                    <v-text-field block v-model="verify" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, passwordMatch]" :type="show1 ? 'text' : 'password'" name="input-10-2" label="Confirm Password" counter @click:append="show1 = !show1"></v-text-field>
+                    <v-text-field block v-model="verify" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" 
+                    :rules="[rules.required, passwordMatch]" :type="show1 ? 'text' : 'password'" 
+                    name="input-10-2" :label="labConfirmar" counter @click:append="show1 = !show1"></v-text-field>
                 </v-col>
                 <v-spacer></v-spacer>
                 <!-- <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12"> -->
@@ -32,8 +38,8 @@
                 closable
                 text="Credenciales no válidas"
                 ></v-alert>
-                    <v-btn class="boton" x-large block  @click="validate">Register</v-btn>
-                    <v-btn class="boton" x-large block  @click="$router.push('/')">Cancelar</v-btn>
+                    <v-btn class="boton" x-large block  @click="validate">{{textRegistrar}}</v-btn>
+                    <v-btn class="boton" x-large block  @click="$router.push('/')">{{textCancelar}}</v-btn>
                 </v-col>
             </v-row>
         </v-form>
@@ -41,7 +47,7 @@
     <v-snackbar
       v-model="snackbar"
     >
-      Se ha registrado con éxito
+      {{textExito}}
 
       <template v-slot:actions>
         <v-btn
@@ -49,7 +55,7 @@
           variant="text"
           @click="acceptReg"
         >
-          Aceptar
+          {{textAceptar}}
         </v-btn>
       </template>
     </v-snackbar>
@@ -64,6 +70,7 @@ export default {
             dialog: true,
             error_valid: false,
             idioma: "",
+            labConfirmar:"",
             languages:[
                 'English',
                 'Español'
@@ -74,13 +81,18 @@ export default {
                 {name:"Register", icon:"mdi-account-outline"}
             ],
             valid: true,
-            
+            labNombre:"",
             name: "",
             email: "",
             password: "",
             verify: "",
             loginPassword: "",
             loginEmail: "",
+            labSelLen: "",
+            textRegistrar: "",
+            textCancelar: "",
+            textExito: "",
+            textAceptar: "",
             snackbar: false,
     loginEmailRules: [
       v => !!v || "Required",
@@ -127,7 +139,6 @@ export default {
                     }
             await axios.post('register',data_register)
                     .then (respuesta =>{
-                        console.log(respuesta.data)
                         if (hay_error === 0){
                             this.snackbar = true
                             // this.$route.push(login)
@@ -152,6 +163,25 @@ export default {
         },
         acceptReg(){
             this.$router.push('login')
+        },
+        selIdioma(){
+            if(this.idioma === 'English'){
+                this.labNombre = 'First name'
+                this.labConfirmar = 'Confirm password'
+                this.labSelLen = 'Select language'
+                this.textRegistrar = 'Register'
+                this.textCancelar = 'Cancel'
+                this.textExito = 'Register success'
+                this.textAceptar = 'Ok'
+            }else{
+                this.labNombre = 'Nombre'
+                this.labConfirmar = 'Confirmar password'
+                this.labSelLen = 'Seleccione idioma'
+                this.textRegistrar = 'Registrar'
+                this.textCancelar = 'Cancelar'
+                this.textExito = 'Se ha registrado con éxito'
+                this.textAceptar = 'Aceptar'
+            }
         }
     },
     }

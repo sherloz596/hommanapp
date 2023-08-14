@@ -5,6 +5,7 @@ import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import store from './store'
 
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -37,6 +38,7 @@ if(token){
 }
 
 createApp(App)
+  .use(store)
   .use(router)
   .use(vuetify,{iconfont: 'faSvg'})
   .use(VueAxios,axios)

@@ -22,6 +22,7 @@
 <script>
 import HeadBar from '../components/HeadBar.vue';
 import FootBar from '../components/FootBar.vue';
+import store from '../store'
     export default {
         data(){
             return{
@@ -135,6 +136,10 @@ import FootBar from '../components/FootBar.vue';
             }
         },
         mounted(){
+            if (store.state.reload === 0){
+                this.$store.dispatch("reload");
+                location.reload()
+            }
             this.upSeleccionado()
         },
         updated(){

@@ -14,7 +14,8 @@
           :label="etiqueta" maxlength="20" required></v-text-field>
           <v-text-field v-if = "origen ==='tareas' | origen ==='edit_tarea'" v-model="frecuencia" :rules="[rules.required, rules.max]" 
           :label="etiq_frec" maxlength="20" required></v-text-field>
-          <v-checkbox v-if = "origen === 'edit_tarea'" label="Reset último realizado" v-model="check_reset"></v-checkbox>
+          <v-checkbox v-if = "origen === 'edit_tarea' & idioma === 'SPA'" label="Reset último realizado" v-model="check_reset"></v-checkbox>
+          <v-checkbox v-if = "origen === 'edit_tarea' & idioma === 'ENG'" label="Reset last time" v-model="check_reset"></v-checkbox>
           <div class="pa-4 text-center">
             <v-alert v-if = "error_nombre"
                 density="compact"
@@ -65,7 +66,7 @@ import axios from 'axios'
                 unidades:[{}],
                 tareas:[{}],
                 idioma:"",
-                etiq_frec: "Frecuencia",
+                etiq_frec: "",
                 frecuencia:"",
                 check_reset: false,
                 rules: {
@@ -147,8 +148,6 @@ import axios from 'axios'
                     }
                 })
                 .catch(error => {
-                    console.log(error)
-                     console.log(error.response.status);
                      if (error.response.status === 401){
                         this.err_nom_text = "Se ha producido un error"
                         this.error_nombre = true
@@ -156,10 +155,18 @@ import axios from 'axios'
                 })
                 }else{
                     if (coincide){
-                        this.err_nom_text = "El nombre ya está en uso"
+                        if(this.idioma === 'SPA'){
+                            this.err_nom_text = "El nombre ya está en uso"
+                        }else{
+                            this.err_nom_text = "The name is already in use"
+                        }
                         this.error_nombre = true
                     }else{
-                        this.err_nom_text = "Nombre no válido"
+                        if(this.idioma === 'SPA'){
+                            this.err_nom_text = "Nombre no válido"
+                        }else{
+                            this.err_nom_text = "Invalid name"
+                        }
                         this.error_nombre = true
                     }
                 }
@@ -195,8 +202,6 @@ import axios from 'axios'
                     }
                 })
                 .catch(error => {
-                    console.log(error)
-                     console.log(error.response.status);
                      if (error.response.status === 401){
                         this.err_nom_text = "Se ha producido un error"
                         this.error_nombre = true
@@ -204,10 +209,18 @@ import axios from 'axios'
                 })
                 }else{
                     if (coincide){
-                        this.err_nom_text = "El nombre ya está en uso"
+                        if(this.idioma === 'SPA'){
+                            this.err_nom_text = "El nombre ya está en uso"
+                        }else{
+                            this.err_nom_text = "The name is already in use"
+                        }
                         this.error_nombre = true
                     }else{
-                        this.err_nom_text = "Nombre no válido"
+                        if(this.idioma === 'SPA'){
+                            this.err_nom_text = "Nombre no válido"
+                        }else{
+                            this.err_nom_text = "Invalid name"
+                        }
                         this.error_nombre = true
                     }
                 }
@@ -243,8 +256,6 @@ import axios from 'axios'
                     }
                 })
                 .catch(error => {
-                    console.log(error)
-                     console.log(error.response.status);
                      if (error.response.status === 401){
                         this.err_nom_text = "Se ha producido un error"
                         this.error_nombre = true
@@ -252,10 +263,18 @@ import axios from 'axios'
                 })
                 }else{
                     if (coincide){
-                        this.err_nom_text = "El nombre ya está en uso"
+                        if(this.idioma === 'SPA'){
+                            this.err_nom_text = "El nombre ya está en uso"
+                        }else{
+                            this.err_nom_text = "The name is already in use"
+                        }
                         this.error_nombre = true
                     }else{
-                        this.err_nom_text = "Nombre no válido"
+                        if(this.idioma === 'SPA'){
+                            this.err_nom_text = "Nombre no válido"
+                        }else{
+                            this.err_nom_text = "Invalid name"
+                        }
                         this.error_nombre = true
                     }
                 }
@@ -287,8 +306,6 @@ import axios from 'axios'
                     }
                 })
                 .catch(error => {
-                    console.log(error)
-                     console.log(error.response.status);
                      if (error.response.status === 401){
                         this.err_nom_text = "Se ha producido un error"
                         this.error_nombre = true
@@ -338,8 +355,6 @@ import axios from 'axios'
                     }
                 })
                 .catch(error => {
-                    console.log(error)
-                     console.log(error.response.status);
                      if (error.response.status === 401){
                         this.err_nom_text = "Se ha producido un error"
                         this.error_nombre = true
@@ -356,7 +371,6 @@ import axios from 'axios'
                 }
             },
             async editDespensa(){
-                console.log("CHECK")
                 var nom_despensa = this.nombre.trim()
                 var coincide = false
                 if ((this.idioma === 'SPA' & nom_despensa != this.item.despensa) 
@@ -388,7 +402,6 @@ import axios from 'axios'
                     }
                 })
                 .catch(error => {
-                    console.log(error)
                      if (error.response.status === 401){
                         this.err_nom_text = "Se ha producido un error"
                         this.error_nombre = true
@@ -396,10 +409,18 @@ import axios from 'axios'
                 })
                 }else{
                     if (coincide){
-                        this.err_nom_text = "El nombre ya está en uso"
+                        if(this.idioma === 'SPA'){
+                            this.err_nom_text = "El nombre ya está en uso"
+                        }else{
+                            this.err_nom_text = "The name is already in use"
+                        }     
                         this.error_nombre = true
                     }else{
-                        this.err_nom_text = "Nombre no válido"
+                        if(this.idioma === 'SPA'){
+                            this.err_nom_text = "Nombre no válido"
+                        }else{
+                            this.err_nom_text = "Invalid name"
+                        }
                         this.error_nombre = true
                     }
                 }
@@ -439,7 +460,6 @@ import axios from 'axios'
                     }
                 })
                 .catch(error => {
-                    console.log(error)
                      if (error.response.status === 401){
                         this.err_nom_text = "Se ha producido un error"
                         this.error_nombre = true
@@ -447,10 +467,18 @@ import axios from 'axios'
                 })
                 }else{
                     if (coincide){
-                        this.err_nom_text = "El nombre ya está en uso"
+                        if(this.idioma === 'SPA'){
+                            this.err_nom_text = "El nombre ya está en uso"
+                        }else{
+                            this.err_nom_text = "The name is already in use"
+                        }
                         this.error_nombre = true
                     }else{
-                        this.err_nom_text = "Nombre no válido"
+                        if(this.idioma === 'SPA'){
+                            this.err_nom_text = "Nombre no válido"
+                        }else{
+                            this.err_nom_text = "Invalid name"
+                        }
                         this.error_nombre = true
                     }
                 }
@@ -488,7 +516,6 @@ import axios from 'axios'
                     }
                 })
                 .catch(error => {
-                    console.log(error)
                      if (error.response.status === 401){
                         this.err_nom_text = "Se ha producido un error"
                         this.error_nombre = true
@@ -496,11 +523,18 @@ import axios from 'axios'
                 })
                 }else{
                     if (coincide){
-                        this.err_nom_text = "El nombre ya está en uso"
+                        if(this.idioma === 'SPA'){
+                            this.err_nom_text = "El nombre ya está en uso"
+                        }else{
+                            this.err_nom_text = "The name is already in use"
+                        }
                         this.error_nombre = true
                     }else{
-                        this.err_nom_text = "Nombre no válido"
-                        this.error_nombre = true
+                        if(this.idioma === 'SPA'){
+                            this.err_nom_text = "Nombre no válido"
+                        }else{
+                            this.err_nom_text = "Invalid name"
+                        }
                     }
                 }
                 }
@@ -543,8 +577,15 @@ import axios from 'axios'
                         }
                         break 
                     case "tareas":
-                        this.titulo = "Nueva tarea"
-                        this.etiqueta = "Tarea"
+                        if (this.idioma === 'SPA'){
+                            this.titulo = "Nueva tarea"
+                            this.etiqueta = "Tarea"
+                            this.etiq_frec = "Frecuencia"
+                        }else{
+                            this.titulo = "New task"
+                            this.etiqueta = "Task"
+                            this.etiq_frec = "Frequency"
+                        }
                         break 
                     case "edit_despensa":
                         if (this.idioma === 'SPA'){
@@ -571,11 +612,17 @@ import axios from 'axios'
                         }
                         break
                     case "edit_tarea":
-                        this.titulo = "Editar tarea"
-                        this.etiqueta = "Tarea"
+                        if (this.idioma === 'SPA'){
+                            this.titulo = "Editar tarea"
+                            this.etiqueta = "Tarea"
+                            
+                        }else{
+                            this.titulo = "Edit task"
+                            this.etiqueta = "Task"
+                        }
+
                         this.frecuencia = this.item.frecuencia
                         this.nombre = this.item.tarea
-
                         break
                     case "edit_unit":
                         if (this.idioma === 'SPA'){

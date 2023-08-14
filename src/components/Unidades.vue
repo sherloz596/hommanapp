@@ -124,7 +124,6 @@ import Añadir from '../components/Añadir.vue';
                 async del_ok(){
                 await axios.delete('units/'+this.eliminar)
                 .catch(error => {
-                    console.log(error)
                       if (error.response.status != 0){
                           this.error_prod_text = "Se ha producido un error"
                           this.error_prod = true

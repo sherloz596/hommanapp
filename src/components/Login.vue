@@ -1,5 +1,10 @@
 <template>
-      <div class="d-flex align-center justify-center" style="height: 100vh">
+           <div class="d-flex align-center justify-center" style="height: 25vh;margin-top: 50px;">
+
+            <v-img src="imagenes\logo_hm.png"></v-img>
+        </div>
+      <div class="d-flex align-center justify-center" style="height: 75vh">
+       
         <v-sheet width="400" class="mx-auto">
             <v-form class="form_login" fast-fail @submit.prevent="login">
                 <v-text-field v-model="email" label="Email"></v-text-field>
@@ -55,12 +60,12 @@ import axios from 'axios'
                     password: this.password
                 }
                 this.loading = true
-                axios.post('login',data_login)
+                await axios.post('login',data_login)
                 .then (respuesta =>{
                     if (respuesta.data.accessToken != null){
-                        console.log(respuesta.data.user)
                         localStorage.setItem('token', respuesta.data.accessToken)
                         localStorage.setItem('idioma', respuesta.data.user.idioma)
+                        this.$store.dispatch("doLogin", respuesta.data.user.email);
                         //this.axios.defaults.headers.common['Authorization'] = 'Bearer '+ respuesta.data.accessToken
                         //  this.$router.push('dashboard/despensas')
 
@@ -68,7 +73,6 @@ import axios from 'axios'
                 })
                 .then (login=>{
                 if(hay_error===0){
-                    console.log(hay_error)
                         // location.reload()
                         this.loading = false
                         this.$router.push('dashboard/')
@@ -78,14 +82,12 @@ import axios from 'axios'
                 //         this.$router.push('dashboard/')
                 //     }
                 // await (hay_error=>{
-                //     console.log(hay_error)
                 //     if(hay_error===0){
                 //         this.loading = false
                 //         this.$router.push('dashboard/')
                 //     }
                 // })
                 .catch(error => {
-                     console.log(error.response.status);
                      if (error.response.status === 401){
                         this.error_login = true
                      }

@@ -75,11 +75,12 @@ import axios from 'axios'
                 if (respuesta.data.message === "Logout OK"){
                     localStorage.removeItem('token')
                     localStorage.removeItem('idioma')
+                    this.$store.dispatch("doLogout");
+                    this.$store.dispatch("unreload");
                     this.$router.push('/login')
                 }
             })
             .catch(error => {
-                    console.log(error)
                 })
            },
            async changeLan(){
@@ -94,7 +95,6 @@ import axios from 'axios'
                 }
             })
             .catch(error => {
-                    console.log(error)
                 })
            },
            cargar_textos(){

@@ -55,7 +55,6 @@ import axios from 'axios'
                 }
               })
               .catch(error => {
-                   console.log(error.response.status);
                    if (error.response.status === 401){
                       this.error_login = true
                    }

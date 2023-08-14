@@ -29,43 +29,66 @@
           :key="producto.cod_producto"
         >
         
-        <td >
+        <td v-if="idioma === 'SPA'">
             <v-badge v-if="producto.estado_producto === 'Pendiente'" 
             dot inline color="red"></v-badge>
         {{ producto.producto }}
             
         </td>
+        <td v-else>
+            <v-badge v-if="producto.estado_producto === 'Pendiente'" 
+            dot inline color="red"></v-badge>
+        {{ producto.idioma }}
+            
+        </td>
         <td>                     
             <div class="guardar" v-if="producto.estado_producto === 'Pendiente'">
-                <span>Guardar</span>
+                <span>{{almaGuardar}}</span>
                 <v-text-field
                 class="in_cant"
-                label="Cantidad"
+                :label="almaCantidad"
                 v-model="cantidad[producto.cod_linea]"
                 hide-details
                 single-line
                 compact
                 type="number"/>
-
+            </div>
+        </td>
+        <td>
+            <div v-if="producto.estado_producto === 'Pendiente'">
                 <v-select
                 class="combo"
-              v-model="unit[producto.cod_linea]"
-              :items="unidades"
-              item-title="unidad"
-              item-value="cod_unidad"
-            ></v-select>
-               <span>en</span>
+                v-model="unit[producto.cod_linea]"
+                :label="almaUniLab"
+                :items="unidades"
+                :item-title="almaUnidad"
+                item-value="cod_unidad"
+                ></v-select>
+            </div>
+        </td>
+        <td>
+            <div v-if="producto.estado_producto === 'Pendiente'">
+               <span>{{almaEn}}</span>
+            </div>
+        </td>
+        <td>
+            <div v-if="producto.estado_producto === 'Pendiente'">
                <v-select
                 class="combo"
-              v-model="despensa[producto.cod_linea]"
-              :items="despensas"
-              item-title="despensa"
-              item-value="cod_despensa"
-            ></v-select>
+                v-model="despensa[producto.cod_linea]"
+                :label="almaDespLab"
+                :items="despensas"
+                :item-title="almaDespensa"
+                item-value="cod_despensa"
+                ></v-select>
+            </div>
+        </td>
+        <td>
+            <div v-if="producto.estado_producto === 'Pendiente'">
             <font-awesome-icon class="icon_btn" icon="fa-solid fa-right-to-bracket" size="xl"
             @click="almacenar(producto)"/>
             </div>
-            <div v-else>
+            <div v-if="producto.estado_producto != 'Pendiente'">
                 <font-awesome-icon icon="fa-solid fa-check" style="color:green;" size="xl"/>
             </div>
         </td>
@@ -96,7 +119,15 @@ import axios from 'axios'
             return{
                 error_carga: false,
                 error_carga_text: "",
+                almaCantidad: "",
+                almaGuardar: "",
+                almaEn: "",
+                idioma: "",
+                almaUnidad: "",
+                almaDespensa: "",
                 productos: [{}],
+                almaUniLab: "",
+                almaDespLab: "",
                 pendiente: true,
                 unidades: [{}],
                 cantidad: [],
@@ -185,7 +216,6 @@ import axios from 'axios'
                 await axios.put('lista_compra_lin/'+producto.cod_linea,payload)
                 .then ((respuesta) =>{
                     this.cargaCompra()
-                    // this.comprobarCompleta()
                     })
                 .catch(error => {
                     if (error.response.status != 0){
@@ -197,7 +227,6 @@ import axios from 'axios'
             comprobarCompleta(){
                 let completa = true
                 for (let i = 0; i < this.productos.length; i++){
-                    console.log(i+": "+this.productos[i].estado_producto)
                     if (this.productos[i].estado_producto === "Pendiente"){
                         completa = false
                         return
@@ -212,18 +241,37 @@ import axios from 'axios'
                     nombre: this.titulo,
                     estado: "Almacenada"
                 }
-                console.log(payload)
                 await axios.put('lista_compra/'+this.cod_lista,payload)
                 .catch(error => {
-                    console.log(error)
                     if (error.response.status != 0){
                         this.error_carga_text = "Se ha producido un error"
                         this.error_carga = true
                     }
                 })
+            },
+            cargarTextos(){
+                if (this.idioma === 'SPA'){
+                    this.almaCantidad = 'Cantidad'
+                    this.almaEn = 'en'
+                    this.almaGuardar = 'Guardar'
+                    this.almaUnidad = 'unidad'
+                    this.almaDespensa = 'despensa'
+                    this.almaUniLab = 'Unidad'
+                    this.almaDespLab = 'Despensa'
+                }else{
+                    this.almaCantidad = 'Quantity'
+                    this.almaEn = 'in'
+                    this.almaGuardar = 'Store'
+                    this.almaUnidad = 'idioma'
+                    this.almaDespensa = 'idioma'
+                    this.almaUniLab = 'Unit'
+                    this.almaDespLab = 'Pantry'
+                }
             }
         },
         mounted() {
+            this.idioma = localStorage.getItem('idioma')
+            this.cargarTextos()
             this.cargaCompra()
             this.cargaUnidades()
             this.cargaDespensas()

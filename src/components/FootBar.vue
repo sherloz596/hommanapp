@@ -147,7 +147,6 @@
             this.idioma = localStorage.getItem('idioma')
         }
         // mounted() {
-        //     console.log(this.$route.path)
         //     switch(this.$route.path){
         //         case "/dashboard/despensas":
         //             this.seleccionado = this.despensas

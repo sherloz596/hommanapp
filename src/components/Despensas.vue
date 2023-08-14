@@ -38,18 +38,19 @@
             <v-divider class="border-opacity-75" 
             :thickness="3"
             style="margin-top: 20px;margin-bottom: 20px;"></v-divider>
-            <span><h3>Nuevo almacenaje</h3></span>
+            <span><h3>{{almaNuevo}}</h3></span>
             <!-- v-model="producto[producto.cod_producto]" -->
             <v-select
                 class="combo"
               v-model="producto"
               :items="productos"
-              item-title="producto"
+              :label="almaProducto"
+              :item-title="almaSelectProducto"
               item-value="cod_producto"
             ></v-select>
             <v-text-field
                 class="in_cant"
-                label="Cantidad"
+                :label="almaCantidad"
                 v-model="cantidad"
                 hide-details
                 single-line
@@ -59,11 +60,12 @@
                 class="combo"
               v-model="unit"
               :items="unidades"
-              item-title="unidad"
+              :label="almaUnidad"
+              :item-title="almaSelectUnidad"
               item-value="cod_unidad"
             ></v-select>
-            <v-btn @click="almaOk" style="margin-right: 40px;">Aceptar</v-btn>
-            <v-btn @click="cancelAlma">Cancelar</v-btn>
+            <v-btn @click="almaOk" style="margin-right: 40px;">{{almaOkText}}</v-btn>
+            <v-btn @click="cancelAlma">{{almaCancel}}</v-btn>
           </div>
           <div class="pa-4 text-end">
             <v-btn
@@ -75,7 +77,7 @@
               variant="outlined"
               @click="add_alma = true"
             >
-              Almacenar
+              {{text_almac}}
             </v-btn>
             <v-btn
               v-if="!add_alma"
@@ -86,7 +88,7 @@
               variant="outlined"
               @click="dialog = false"
             >
-              Cerrar
+              {{almaCerrar}}
             </v-btn>
           </div>
         </v-card>
@@ -97,9 +99,9 @@
       >
         <v-card>
           <v-card-title class="text-h5">
-            Eliminar
+            {{delTittle}}
           </v-card-title>
-          <v-card-text>¿Está seguro de eliminar la despensa?</v-card-text>
+          <v-card-text>{{deltext}}</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -107,14 +109,14 @@
               variant="text"
               @click="del_dialog = false"
             >
-              Cancelar
+              {{delCancel}}
             </v-btn>
             <v-btn
               color="green-darken-1"
               variant="text"
               @click="del_ok"
             >
-              Aceptar
+              {{delOk}}
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -151,6 +153,20 @@ import Añadir from '../components/Añadir.vue';
                 err_despensas: "",
                 err_despensas_text: "",
                 ver_despensa: 0,
+                text_almac: "",
+                deltext: "",
+                delCancel: "",
+                delOk: "",
+                delTittle: "",
+                almaCerrar: "",
+                almaNuevo: "",
+                almaOkText: "",
+                almaCancel: "",
+                almaCantidad:"",
+                almaProducto: "",
+                almaUnidad: "",
+                almaSelectProducto: "",
+                almaSelectUnidad: "",
                 del_dialog: false,
                 eliminar: null,
                 idioma: "",
@@ -187,9 +203,8 @@ import Añadir from '../components/Añadir.vue';
                 
                 })
                 .catch(error => {
-                    console.log(error)
                     if (error.response.status != 0){
-                        location.reload()
+                        // location.reload()
                         this.err_despensas_text = "Se ha producido un error"
                         this.err_despensas = true
                     }
@@ -197,7 +212,11 @@ import Añadir from '../components/Añadir.vue';
             },
             mostrar(despensa){
                 this.despensa_sel = despensa
-                this.titulo = despensa.despensa
+                if (this.idioma === 'SPA'){
+                    this.titulo = despensa.despensa
+                }else{
+                    this.titulo = despensa.idioma
+                }
                 this.ver_despensa = despensa.cod_despensa
                 this.dialog = !this.dialog
             },
@@ -220,7 +239,6 @@ import Añadir from '../components/Añadir.vue';
             async del_ok(){
                 await axios.delete('despensas/'+this.eliminar)
                 .catch(error => {
-                    console.log(error)
                       if (error.response.status != 0){
                           this.error_prod_text = "Se ha producido un error"
                           this.error_prod = true
@@ -269,9 +287,6 @@ import Añadir from '../components/Añadir.vue';
               this.unit = []
             },
             async almaOk(){
-          console.log(this.producto)
-          console.log(this.cantidad)
-          console.log(this.unit)
                 if (this.producto != "" & this.unit != "" & this.cantidad > 0){
                     let payload = {
                         cod_producto: this.producto,
@@ -300,12 +315,50 @@ import Añadir from '../components/Añadir.vue';
                     })
                 }
             },
+            cargarTextos(){
+                if(this.idioma === 'SPA'){
+                    this.text_almac = "Almacenar"
+                    this.delTittle = "Eliminar"
+                    this.deltext = '¿Está seguro de eliminar la despensa?'
+                    this.delCancel = 'Cancelar'
+                    this.delOk = 'Aceptar'
+                    this.almaCerrar = 'Cerrar'
+                    this.almaNuevo = 'Nuevo almacenaje'
+                    this.almaOkText = 'Aceptar'
+                    this.almaCancel = 'Cancelar'
+                    this.almaCantidad = 'Cantidad'
+                    this.almaProducto = 'Producto'
+                    this.almaUnidad = 'Unidad'
+                    this.almaSelectProducto = "producto"
+                    this.almaSelectUnidad = "unidad"
+                }else{
+                    this.text_almac = "Store"
+                    this.delTittle = "Delete"
+                    this.deltext = 'Are you sure to delete the pantry?'
+                    this.delCancel = 'Cancel'
+                    this.delOk = 'Ok'
+                    this.almaCerrar = 'Close'
+                    this.almaNuevo = 'New storage'
+                    this.almaOkText = 'Ok'
+                    this.almaCancel = 'Cancel'
+                    this.almaCantidad = 'Quantity'
+                    this.almaProducto = 'Product'
+                    this.almaUnidad = 'Unit'
+                    this.almaSelectProducto = "idioma"
+                    this.almaSelectUnidad = "idioma"
+                }
+            }
         },
         mounted(){
             this.idioma = localStorage.getItem('idioma')
+            this.cargarTextos()
             this.cargarDespensas()
             this.cargarProductos()
             this.cargaUnidades()
+            if(this.idioma === 'SPA'){
+            }else{
+
+            }
         } 
     }
 </script>

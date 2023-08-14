@@ -14,10 +14,10 @@
         <tr>
         <th cols="1" class="d-flex justify-center align-center">
         </th>
-            <th><h3>Tarea</h3></th>
-            <th><h3>Frecuencia</h3></th>
-            <th><h3>Última vez</h3></th>
-            <th><h3>Realizado</h3></th>
+            <th><h3>{{htarea}}</h3></th>
+            <th><h3>{{hfrecuencia}}</h3></th>
+            <th><h3>{{hultimo}}</h3></th>
+            <th><h3>{{hrealizado}}</h3></th>
     </tr>
       </thead>
       <tbody>
@@ -60,9 +60,9 @@
       >
         <v-card>
           <v-card-title class="text-h5">
-            Eliminar
+            {{delTittle}}
           </v-card-title>
-          <v-card-text>¿Está seguro de eliminar la tarea?</v-card-text>
+          <v-card-text>{{deltext}}</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -70,18 +70,22 @@
               variant="text"
               @click="del_dialog = false"
             >
-              Cancelar
+              {{delCancel}}
             </v-btn>
             <v-btn
               color="green-darken-1"
               variant="text"
               @click="del_ok"
             >
-              Aceptar
+              {{delOk}}
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <div v-if="hay_tareas === false">
+        <h3 v-if="idioma === 'SPA'">No hay tareas en la lista</h3>
+        <h3 v-else>No tasks in list</h3>
+      </div>
     </div>
 </template>
 
@@ -103,10 +107,18 @@ import Añadir from '../components/Añadir.vue';
                 error_nombre: false,
                 origen: "",
                 del_dialog: false,
+                deltext: "",
+                delCancel: "",
+                delOk: "",
+                delTittle: "",
                 eliminar: null,
                 cod_item: null,
                 nom_item: "",
                 nom_idioma: "",
+                htarea: "",
+                hfrecuencia: "",
+                hultimo: "",
+                hrealizado: "",
                 item: undefined,
                 tareas:[{}],
                 rules: {
@@ -149,7 +161,7 @@ import Añadir from '../components/Añadir.vue';
             },
              async upRealizada(tarea){
                 var fecha = new Date()
-                var fechaformat = (fecha.getDay()-1) + "/" + (fecha.getMonth()+1) + "/" + fecha.getFullYear()
+                var fechaformat = (fecha.getDate()) + "/" + (fecha.getMonth()+1) + "/" + fecha.getFullYear()
                 let payload = {
                     tarea: tarea.tarea,
                     frecuencia: tarea.frecuencia,
@@ -179,13 +191,23 @@ import Añadir from '../components/Añadir.vue';
                 this.dialog_add = true
             },
             delTarea(cod_tarea){
+                if (this.idioma === 'SPA'){
+                    this.delTittle = "Eliminar"
+                    this.deltext = '¿Está seguro de eliminar la tarea?'
+                    this.delCancel = 'Cancelar'
+                    this.delOk = 'Aceptar'
+                }else{
+                    this.delTittle = "Delete"
+                    this.deltext = 'Are you sure to delete the task?'
+                    this.delCancel = 'Cancel'
+                    this.delOk = 'Ok'
+                }
                 this.del_dialog = true
                 this.eliminar = cod_tarea
             },
             async del_ok(){
                 await axios.delete('tareas/'+this.eliminar)
                 .catch(error => {
-                    console.log(error)
                       if (error.response.status != 0){
                           this.error_tarea_text = "Se ha producido un error"
                           this.error_tarea = true
@@ -196,9 +218,25 @@ import Añadir from '../components/Añadir.vue';
             },
             recargar(){
                 this.cargarTareas()
+            },
+            cargarCabecera(){
+                if (this.idioma === "SPA"){
+                    this.htarea = "Tarea"
+                    this.hfrecuencia = "Frecuencia"
+                    this.hultimo = "Última vez"
+                    this.hrealizado = "Realizado"
+                }
+                if (this.idioma === "ENG"){
+                    this.htarea = "Task"
+                    this.hfrecuencia = "Frequency"
+                    this.hultimo = "Last time"
+                    this.hrealizado = "Done"
+                }
             }
         },
         mounted(){
+            this.idioma = localStorage.getItem('idioma')
+            this.cargarCabecera()
             this.cargarDatos()
         }
     }
