@@ -64,6 +64,7 @@ import AnterioresTabla from '../components/AnterioresTabla.vue';
             },
             closeDialog(){
                 this.dialog = false
+                location.reload()
             },
             cargarTextos(){
                 if(this.idioma === 'SPA'){

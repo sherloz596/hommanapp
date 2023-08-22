@@ -38,8 +38,12 @@
                 closable
                 text="Credenciales no válidas"
                 ></v-alert>
-                    <v-btn class="boton" x-large block  @click="validate">{{textRegistrar}}</v-btn>
-                    <v-btn class="boton" x-large block  @click="$router.push('/')">{{textCancelar}}</v-btn>
+                <v-progress-linear color="primary" indeterminate
+                    v-if="loading === true"></v-progress-linear>
+                    <v-btn class="boton" x-large block  @click="validate" v-if="loading === false">
+                        {{textRegistrar}}</v-btn>
+                    <v-btn class="boton" x-large block  @click="$router.push('/')" v-if="loading === false">
+                        {{textCancelar}}</v-btn>
                 </v-col>
             </v-row>
         </v-form>
@@ -81,6 +85,7 @@ export default {
                 {name:"Register", icon:"mdi-account-outline"}
             ],
             valid: true,
+            loading: false,
             labNombre:"",
             name: "",
             email: "",
@@ -137,6 +142,7 @@ export default {
                         idioma: this.idioma,
                         invitado: ''
                     }
+            this.loading = true
             await axios.post('register',data_register)
                     .then (respuesta =>{
                         if (hay_error === 0){
@@ -146,10 +152,12 @@ export default {
                     })
                     .catch(error => {
                         hay_error = 1
+                        this.loading = false
                         if (error.response.status === 401){
                             this.error_login = true
                         }
                     })
+                    this.loading = false
         }else{
             this.error_valid = true
         }

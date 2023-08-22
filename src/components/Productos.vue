@@ -21,7 +21,7 @@
         >
         <v-row no-gutters class="columna">
 
-    <v-col lg="1" class="d-flex" style="background-color: #810281;"></v-col>
+    <!-- <v-col lg="1" class="d-flex" style="background-color: #810281;"></v-col> -->
     <v-col cols="1" class="d-flex justify-center align-center">
         <td v-if="tipo === 4">
             <font-awesome-icon class="edit_icon"  icon="fa-solid fa-pen" size = "xs"
@@ -62,7 +62,7 @@
             @click="upFavorito(producto)"/>
         </td>
     </v-col>
-    <v-col lg="1" class="d-flex" style="background-color: #810281;"></v-col>
+    <!-- <v-col lg="1" class="d-flex" style="background-color: #810281;"></v-col> -->
 
           <!-- <td>{{ producto.cantidad }}</td> -->
         </v-row>

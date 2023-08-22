@@ -144,7 +144,7 @@ import axios from 'axios'
                     .then (respuesta =>{
                     if (respuesta.data.despensa === nom_despensa){
                         this.$emit('reload')
-                        this.close_add()
+                        // this.close_add()
                     }
                 })
                 .catch(error => {

@@ -41,7 +41,6 @@
             <span><h3>{{almaNuevo}}</h3></span>
             <!-- v-model="producto[producto.cod_producto]" -->
             <v-select
-                class="combo"
               v-model="producto"
               :items="productos"
               :label="almaProducto"
@@ -49,15 +48,14 @@
               item-value="cod_producto"
             ></v-select>
             <v-text-field
-                class="in_cant"
                 :label="almaCantidad"
                 v-model="cantidad"
                 hide-details
                 single-line
                 compact
-                type="number"/>
+                type="number"
+                style="margin-bottom: 22px;"/>
             <v-select
-                class="combo"
               v-model="unit"
               :items="unidades"
               :label="almaUnidad"
@@ -230,7 +228,8 @@ import Añadir from '../components/Añadir.vue';
                 this.dialog_add = !this.dialog_add
             },
             recargar(){
-                this.cargarDespensas()
+                // this.cargarDespensas()
+                location.reload()
             },
             delDespensa(){
                 this.del_dialog = true
@@ -308,6 +307,7 @@ import Añadir from '../components/Añadir.vue';
                     .catch(error => {
                         if (error){
                             if (error.response.status != 0){
+                                console.log(error.response)
                                 this.error_carga_text = "Se ha producido un error"
                                 this.error_carga = true
                             }

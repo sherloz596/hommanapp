@@ -1,6 +1,9 @@
 <template>
-    <div class="d-flex align-center justify-center" style="height: 100vh" id="app">
-        <v-sheet width=100% class="mx-auto">
+    <div class="d-flex align-center justify-center" style="height: 25vh;margin-top: 50px;">
+        <v-img src="http://localhost:8080/imagenes/logo_hm.png"></v-img>
+    </div>
+    <div class="d-flex align-center justify-center" style="height: 75vh" id="app">
+        <v-sheet width=400 class="mx-auto">
             <v-form class="form_reg" ref="registerForm" v-model="valid" lazy-validation>
                 <v-row>
                     <!-- <v-col cols="12">

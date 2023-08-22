@@ -95,7 +95,7 @@ import axios from 'axios'
                 // while(localStorage.getItem('token')===null){
                     
                 // }
-                // this.loading = false
+                this.loading = false
                 // this.$router.push('dashboard/')
             }
         }

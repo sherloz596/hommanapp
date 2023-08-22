@@ -29,7 +29,7 @@
             <font-awesome-icon class="edit_icon"  icon="fa-solid fa-pen" size = "xs"
             @click="editTarea(tarea)"/>
             <font-awesome-icon class="del_icon" icon="fa-solid fa-trash-can" size = "xs"
-            @click="delTarea(tarea.cod_tarea)"/></td>
+            @click="delTarea(tarea.cod_tarea,tarea.tarea)"/></td>
 
         <td>{{ tarea.tarea }}</td>
         <td>{{ tarea.frecuencia }}</td>
@@ -190,15 +190,15 @@ import Añadir from '../components/Añadir.vue';
                 this.item = tarea
                 this.dialog_add = true
             },
-            delTarea(cod_tarea){
+            delTarea(cod_tarea,tarea){
                 if (this.idioma === 'SPA'){
                     this.delTittle = "Eliminar"
-                    this.deltext = '¿Está seguro de eliminar la tarea?'
+                    this.deltext = '¿Está seguro de eliminar la tarea ' + tarea + '?'
                     this.delCancel = 'Cancelar'
                     this.delOk = 'Aceptar'
                 }else{
                     this.delTittle = "Delete"
-                    this.deltext = 'Are you sure to delete the task?'
+                    this.deltext = 'Are you sure to delete the task ' + tarea + '?'
                     this.delCancel = 'Cancel'
                     this.delOk = 'Ok'
                 }

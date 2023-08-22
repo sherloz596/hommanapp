@@ -19,19 +19,22 @@
                         v-for="producto in productos"
                         :key="producto.cod_producto">
                             <td v-if="idioma === 'SPA'">
-                            {{producto.producto}}:   
+                                {{producto.producto}}
                             </td>
                             <td v-else>
-                            {{producto.idioma}}:   
+                                {{producto.idioma}}:   
+                            </td>
+                            <td>
+                                {{producto.fec_almac}}
                             </td>
                             <td v-if="idioma === 'SPA'">
-                            {{ producto.cantidad }} {{ producto.unidad }}    
+                                {{ producto.cantidad }} {{ producto.unidad }}    
                             </td>
                             <td v-else>
-                            {{ producto.cantidad }} {{ producto.unidioma }}    
+                                {{ producto.cantidad }} {{ producto.unidioma }}    
                             </td>
-                            <td>                     
-                                <div class="sacar">
+                            <td>
+                                <div class ="sacar">
                                     <span>{{textSacar}}:</span>
                                     <v-text-field
                                     class="in_cant"
@@ -40,10 +43,12 @@
                                     hide-details
                                     single-line
                                     compact
-                                    type="number"/>
+                                    type="number"/></div>
+                                </td>
+                            <td>
                                     <font-awesome-icon class="icon_btn" icon="fa-solid fa-right-from-bracket" size="xl"
                                     @click="sacarProducto(producto)"/>
-                                </div>
+                                
                     <!-- </td>
                     <td> -->
                                 <font-awesome-icon class="icon_btn" icon="fa-solid fa-angles-right" size="xl"
@@ -57,7 +62,7 @@
                                         color="pink"
                                         variant="text_snackbar"
                                         @click="snackbar = false">
-                                        Close
+                                        {{textCerrarSnack}}
                                     </v-btn>
                                 </template>
                             </v-snackbar>
@@ -93,6 +98,7 @@ import axios from 'axios'
                 unit:[],
                 despensa:[],
                 text_snackbar: "",
+                textCerrarSnack: "",
                 snackbar: false,
                 lista_vacia: true
             }
@@ -106,6 +112,7 @@ import axios from 'axios'
                 await axios.get('almacenaje/' + this.cod_despensa)
                 .then((respuesta)=>{
                     this.productos = respuesta.data
+                    console.log(respuesta.data)
                     if(this.productos[0]===undefined){
                         this.lista_vacia = true
                     }else{
@@ -123,7 +130,11 @@ import axios from 'axios'
                 if(this.cantidad[producto.cod_almacenaje] != undefined){         
                     let new_qty = producto.cantidad - this.cantidad[producto.cod_almacenaje]
                     if(new_qty < 0){
+                        if (this.idioma === 'SPA'){
                         this.text_snackbar = "Cantidad superior a la existente"
+                        }else{
+                            this.text_snackbar = "Quantity greater than existent"
+                        }
                         this.snackbar = true
                     }else if(new_qty > 0){
 
@@ -135,6 +146,7 @@ import axios from 'axios'
                         }
                         await axios.put('almacenajes/' + producto.cod_almacenaje,payload)
                         .then((respuesta)=>{
+                            this.cantidad[producto.cod_almacenaje] = undefined
                             this.cargarProductos()
                         })
                         .catch(error => {
@@ -166,10 +178,12 @@ import axios from 'axios'
                     this.text_no_prod = "No hay productos almacenados"
                     this.textSacar = 'Sacar'
                     this.labCantidad = 'Cantidad'
+                    this.textCerrarSnack = "Cerrar"
                 }else{
                     this.text_no_prod = "No products in pantry"
                     this.textSacar = 'Take out'
                     this.labCantidad = 'Quantity'
+                    this.textCerrarSnack = "Close"
                 }
             }
         },
